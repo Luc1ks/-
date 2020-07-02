@@ -1,0 +1,42 @@
+.auth {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    .authInput {
+        margin: 10px;
+    }
+
+    button {
+        width: 220px;
+        height: 52px;
+        left: 487px;
+        top: 711px;
+
+        background: #2B2B2E;
+        border-radius: 46px;
+
+        border: none;
+        outline: none;
+
+        color: white;
+
+        margin-top: 20px;
+
+        &.signup {
+            background: #FF003D;
+        }
+
+        &.signin {
+            background: #6C63FF;
+        }
+    }
+}

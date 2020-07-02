@@ -1,0 +1,48 @@
+.preloader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    min-height: 100vh;
+    height: 100%;
+
+    background: black;
+
+    .dot {
+        position: relative;
+
+        width: 10px;
+        height: 10px;
+
+        margin: 5px;
+
+        border-radius: 100%;
+
+        background: white;
+
+        &.first, &.last {
+            animation: preloader infinite linear;
+            animation-duration: 1s;
+            animation-delay: 0.5s;
+        }
+        &.second {
+            animation: preloader infinite linear;
+            animation-duration: 1s;
+        }
+    }
+}
+
+@keyframes preloader {
+    0% {
+        bottom: 0px;
+    }
+
+    50% {
+        bottom: 10px;
+    }
+
+    100% {
+        bottom: 0px;
+    }
+}

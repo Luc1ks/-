@@ -1,0 +1,1 @@
+export const frontAuthUrl = '/auth'
