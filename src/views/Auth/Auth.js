@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import AuthInput from '../../components/AuthInput/AuthInput';
 import './Auth.scss'
 
-function Auth({ setSocekt }) {
+function Auth({ setSocket }) {
 	const [isLogin, setIsLogin] = useState(false);
 
 	if (isLogin) {

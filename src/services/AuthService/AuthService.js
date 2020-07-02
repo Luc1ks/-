@@ -62,7 +62,6 @@ class AuthService {
     
     static async authorize(refreshToken, accessToken) {
 		try {
-
 			const res = await fetch(authorizeUrl, {
 				method: 'POST',
 				headers: {
