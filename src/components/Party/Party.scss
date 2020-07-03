@@ -1,0 +1,69 @@
+.party {
+    width: 250px;
+    height: 400px;
+
+    background: #181819;
+    border-radius: 10px;
+
+    color: white;
+
+    .member {
+        width: 90%;
+        margin: 10px;
+        height: 40px;
+
+        font-size: 16px;
+
+        background: #2B2B2E;
+
+        border-radius: 10px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &.addMember {
+            background: #48484e;
+        }
+    }
+
+    .overlay {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        z-index: 30;
+        top: 0;
+        left: 0;
+
+        background: rgba(0, 0, 0, 0.7);
+        &.false {
+            display: none;
+        }   
+        
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .invite {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+
+            input {
+                width: 250px;
+                height: 40px;
+
+                background: #2B2B2E;
+                border: none;
+                border-radius: 20px;
+                outline: none;
+
+                color: white;
+                font-size: 16px;
+
+                padding: 0 20px;
+            }
+        }
+    }
+}

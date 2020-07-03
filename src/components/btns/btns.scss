@@ -1,0 +1,23 @@
+.btns {
+    width: 112px;
+    height: 40px;
+
+    font-size: 16px;
+    color: white;
+
+    border: none;
+    border-radius: 20px;
+
+    margin: 10px;
+
+    outline: none;
+
+    &.cancel {
+        background: rgb(214, 39, 39);
+    }
+    
+    &.submit {
+        background: rgb(111, 17, 218);
+    }
+}
+

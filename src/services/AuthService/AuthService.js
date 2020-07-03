@@ -1,4 +1,4 @@
-import { signupUrl, signinUrl, authorizeUrl } from '../../urls/authUrls';
+import { signupUrl, signinUrl, authorizeUrl, refreshUrl } from '../../urls/authUrls';
 import io from 'socket.io-client';
 import socketUrl from '../../urls/socketUrl';
 
@@ -62,11 +62,16 @@ class AuthService {
     
     static async authorize(refreshToken, accessToken) {
 		try {
+			console.log(accessToken)
 			const res = await fetch(authorizeUrl, {
 				method: 'POST',
 				headers: {
 					'Authorization': 'Bearer ' + accessToken,
-				}
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					accessToken: accessToken
+				})
 			})
 			const body = await res.json();
 			console.log(body, 'authorize');
@@ -98,7 +103,7 @@ class AuthService {
     }
 
     static async refreshAccessToken(refreshToken) {
-        const res = await fetch(signinUrl, {
+        const res = await fetch(refreshUrl, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -109,7 +114,7 @@ class AuthService {
 		});
 
         const body = await res.json();
-		console.log(body);
+		console.log(body, 'refresh access token');
 		
 		if (body.err) {
 			return {

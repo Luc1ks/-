@@ -13,7 +13,9 @@ class JwtErrorService {
                 TokenService.setAccessToken(result.accessToken);
                 return result.accessToken
             }
-		}
+		} else {
+            return false
+        }
     }
     
 }

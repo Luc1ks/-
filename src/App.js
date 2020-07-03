@@ -9,7 +9,6 @@ import { Switch, Route } from 'react-router';
 import Auth from './views/Auth/Auth';
 import { frontAuthUrl } from './frontUrls/frontAuthUrl';
 import MatchMaking from './views/MathMaking/MatchMaking';
-import { friendListUrl } from './urls/friendsUrls';
 import { BrowserRouter } from 'react-router-dom';
 
 function App() {
@@ -18,34 +17,47 @@ function App() {
 	const [isAuthed, setIsAuthed] = useState(true);
 
 	useEffect(() => {
-		(async () => {
-			if (TokenService.getAccessToken()) {
-				console.log(true)
-				const socket = await AuthService.authorize(
-					TokenService.getRefreshToken(),
-					TokenService.getAccessToken()
-				);
-				console.log(socket);
-
-				if (socket) {
-					setSocket(socket);
-					setShowPreloader(false);
-				} else {
-					setIsAuthed(false);
-					setShowPreloader(false);
+		if (TokenService.getAccessToken()) {
+			AuthService.authorize(TokenService.getRefreshToken(), TokenService.getAccessToken()).then(
+				(socket) => {
+					console.log(socket);
+					if (socket) {
+						console.log(socket);
+						setTimeout(() => {
+							if (!socket.disconnected) {
+								setSocket(socket);
+								setShowPreloader(false);
+								setIsAuthed(true);
+							} else {
+								setShowPreloader(false);
+								setIsAuthed(false);
+							}
+						}, 2000);
+					} else {
+						setIsAuthed(false);
+						setShowPreloader(false);
+					}
 				}
+			);
+		} else {
+			setIsAuthed(false);
+			setShowPreloader(false);
+		}
+	}, []);
+
+	useEffect(() => {
+		setTimeout(() => {
+			if (socket !== null && !socket.disconnected) {
+				setIsAuthed(true);
 			} else {
 				setIsAuthed(false)
-				setShowPreloader(false)
 			}
-		})();
-	}, []);
+		}, 1000);
+	}, [socket]);
 
 	if (showPreloader) {
 		return <PreLoader />;
-	} 
-	console.log(isAuthed)
-	if (isAuthed) {
+	} else if (isAuthed) {
 		return (
 			<div className="App">
 				<SocketContext.Provider value={{ socket: socket }}>
@@ -54,7 +66,6 @@ function App() {
 							<PrivateRoute path="/" setSocket={setSocket} exact>
 								<MatchMaking />
 							</PrivateRoute>
-
 							<Route path={frontAuthUrl}>
 								<Auth setSocket={setSocket} />
 							</Route>

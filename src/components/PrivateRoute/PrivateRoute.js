@@ -1,14 +1,19 @@
-import React, { useContext } from 'react'
-import SocketContext from '../../context/SocketContext'
-import { Redirect, Route } from 'react-router';
-import { frontAuthUrl } from '../../frontUrls/frontAuthUrl';
+import React, { useContext } from 'react';
+import SocketContext from '../../context/SocketContext';
+import { Route } from 'react-router';
+import Auth from '../../views/Auth/Auth';
 
-export default function PrivateRoute({path, setSocket, children}) {
-    const {socket} = useContext(SocketContext);
+export default function PrivateRoute({ path, setSocket, children, ...rest }) {
+	const { socket } = useContext(SocketContext);
 
-    if (!socket || socket.disconnected) {
-        return <Redirect to={frontAuthUrl} />
-    } else {
-        return <Route path={path} />
-    }
+	if (!socket) {
+		return <Auth setSocket={setSocket} />;
+	} else {
+		console.log(path)
+		return (
+		<Route path={path} {...rest} >
+			{children}
+		</Route>
+		);
+	}
 }
