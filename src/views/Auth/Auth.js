@@ -26,8 +26,10 @@ function Auth({ setSocket }) {
 			if (result.err) {
 				setErr(result.err);
 			} else {
+				
 				TokenService.setRefreshToken(result.refreshToken);
 				TokenService.setAccessToken(result.accessToken);
+
 				const socket = await AuthService.authorize(TokenService.getRefreshToken(), TokenService.getAccessToken());
 				if (socket) {
 					setSocket(socket);

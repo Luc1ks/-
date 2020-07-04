@@ -20,9 +20,7 @@ function App() {
 		if (TokenService.getAccessToken()) {
 			AuthService.authorize(TokenService.getRefreshToken(), TokenService.getAccessToken()).then(
 				(socket) => {
-					console.log(socket);
 					if (socket) {
-						console.log(socket);
 						setTimeout(() => {
 							if (!socket.disconnected) {
 								setSocket(socket);

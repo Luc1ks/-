@@ -1,6 +1,7 @@
 import { signupUrl, signinUrl, authorizeUrl, refreshUrl } from '../../urls/authUrls';
 import io from 'socket.io-client';
 import socketUrl from '../../urls/socketUrl';
+import TokenService from '../TokenService/TokenService';
 
 class AuthService {
 	static async singup(username, password, email, so2_nickname, so2_id) {
@@ -62,30 +63,31 @@ class AuthService {
     
     static async authorize(refreshToken, accessToken) {
 		try {
-			console.log(accessToken)
 			const res = await fetch(authorizeUrl, {
 				method: 'POST',
 				headers: {
 					'Authorization': 'Bearer ' + accessToken,
 					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					accessToken: accessToken
-				})
+				}
 			})
 			const body = await res.json();
-			console.log(body, 'authorize');
-	
-			if (body.err && body.err.name === 'jwt expired') {
+ 
+			if (body && body.err) {
+
 				const result = await AuthService.refreshAccessToken(refreshToken);
+
 				if (result.err) {
 					return false
 				} else {
 					const socket = io.connect(socketUrl, {
 						query: {
-							token: accessToken
+							token: result.access_token
 						}
 					});
+
+					TokenService.setRefreshToken(result.access_token);
+					TokenService.setAccessToken(result.refresh_token);
+
 					return socket
 				}
 			} else {
@@ -106,15 +108,12 @@ class AuthService {
         const res = await fetch(refreshUrl, {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				refreshToken: refreshToken
-			}),
+				'Authorization': 'Bearer ' + refreshToken,
+				'Content-Type': 'application/json'
+			}
 		});
 
         const body = await res.json();
-		console.log(body, 'refresh access token');
 		
 		if (body.err) {
 			return {
@@ -122,7 +121,8 @@ class AuthService {
 			} 
 		} else {
 			return {
-				accessToken: body.accessToken
+				access_token: body.access_token,
+				refresh_token: body.refresh_token,
 			}
 		}
     }
