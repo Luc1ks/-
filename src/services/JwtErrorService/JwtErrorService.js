@@ -10,8 +10,8 @@ class JwtErrorService {
                 TokenService.clear();
                 return false
             } else {
-                TokenService.setAccessToken(result.accessToken);
-                return result.accessToken
+                TokenService.setAccessToken(result.access_token);
+                return result.access_token
             }
 		} else {
             return false

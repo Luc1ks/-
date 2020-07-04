@@ -8,7 +8,10 @@ class UserService {
             method: 'POST',
             headers: {
                 'Authorization': 'Bearer ' +  TokenService.getAccessToken()
-            }
+            },
+            body: JSON.stringify({
+                access_token: TokenService.getAccessToken()
+            })
         })
 
         const body = await res.json();
@@ -31,7 +34,10 @@ class UserService {
             method: 'POST',
             headers: {
                 'Authorization': 'Bearer ' + TokenService.getAccessToken()
-            }
+            },
+            body: JSON.stringify({
+                access_token: TokenService.getAccessToken()
+            })
         })
 
         const body = await res.json();

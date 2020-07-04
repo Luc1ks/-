@@ -28,8 +28,8 @@ class AuthService {
 			};
 		} else {
 			return {
-				refreshToken: body.refreshToken,
-				accessToken: body.accessToken,
+				refreshToken: body.refresh_token,
+				accessToken: body.access_token,
 			};
 		}
 	}
@@ -68,12 +68,14 @@ class AuthService {
 				headers: {
 					'Authorization': 'Bearer ' + accessToken,
 					'Content-Type': 'application/json'
-				}
+				},
+				body: JSON.stringify({
+					access_token: accessToken
+				}),
 			})
 			const body = await res.json();
  
 			if (body && body.err) {
-
 				const result = await AuthService.refreshAccessToken(refreshToken);
 
 				if (result.err) {
@@ -110,7 +112,10 @@ class AuthService {
 			headers: {
 				'Authorization': 'Bearer ' + refreshToken,
 				'Content-Type': 'application/json'
-			}
+			},
+			body: JSON.stringify({
+				refresh_token: refreshToken
+			})
 		});
 
         const body = await res.json();

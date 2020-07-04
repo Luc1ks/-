@@ -11,7 +11,7 @@ export default class InviteService {
                 'Content-type': 'application/json'
             },
             body: JSON.stringify({
-                accessToken: TokenService.getAccessToken(),
+                access_token: TokenService.getAccessToken(),
                 targetName: username
             })
         })
@@ -34,7 +34,7 @@ export default class InviteService {
                 'Content-type': 'application/json'
             },
             body: JSON.stringify({
-                accessToken: TokenService.getAccessToken(),
+                access_token: TokenService.getAccessToken(),
                 from: from
             })
         })

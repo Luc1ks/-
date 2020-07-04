@@ -11,7 +11,7 @@ class QueueService {
                 'Content-type': 'application/json'
             },
             body: JSON.stringify({
-                accessToken: TokenService.getAccessToken()
+                access_token: TokenService.getAccessToken()
             })
         })
         const body = await res.json();
@@ -33,7 +33,7 @@ class QueueService {
                 'Content-type': 'application/json'
             },
             body: JSON.stringify({
-                accessToken: TokenService.getAccessToken()
+                access_token: TokenService.getAccessToken()
             })
         })
         const body = await res.json();
