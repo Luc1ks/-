@@ -1,0 +1,38 @@
+.userData {
+	width: 250px;
+	height: 120px;
+
+	background: #1d1d2a;
+	box-shadow: 0 12px 26px rgba(0, 0, 0, 0.4);
+	border-radius: 10px;
+
+	margin-bottom: 20px;
+
+	color: white;
+
+	position: relative;
+
+	.textData {
+		position: absolute;
+		left: 60px;
+		top: 7px;
+	}
+
+	.avatar {
+		width: 50px;
+		height: 50px;
+
+		background: gray;
+
+		border-radius: 10px 0 0;
+
+		position: absolute;
+		left: 0;
+		top: 0;
+	}
+	.bio {
+		position: absolute;
+		bottom: 10px;
+		left: 10px;
+	}
+}

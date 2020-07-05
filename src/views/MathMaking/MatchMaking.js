@@ -11,7 +11,7 @@ export default function MatchMaking() {
 
 	return (
         <div className="matchMaking">
-            <Invites />
+           
             <ProfileData />
             <Search />
             <Party />

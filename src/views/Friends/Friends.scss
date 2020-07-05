@@ -1,0 +1,30 @@
+.addFriend {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	background: #1d1d2a;
+	border-radius: 20px;
+	padding: 20px;
+	box-shadow: 3px 4px 9px rgba(0, 0, 0, 0.25);
+
+	input {
+		width: 250px;
+		height: 40px;
+		background: #2b2b2e;
+		border: none;
+		border-radius: 20px;
+		outline: none;
+		color: white;
+		font-size: 16px;
+		padding: 0 20px;
+	}
+}
+
+
+.friends {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}

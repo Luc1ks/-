@@ -10,45 +10,50 @@ import Auth from './views/Auth/Auth';
 import { frontAuthUrl } from './frontUrls/frontAuthUrl';
 import MatchMaking from './views/MathMaking/MatchMaking';
 import { BrowserRouter } from 'react-router-dom';
+import Navbar from './components/Navbar/Navbar';
+import Friends from './views/Friends/Friends';
+import Notifications from './components/Notifications/Notifications';
 
 function App() {
 	const [socket, setSocket] = useState(null);
 	const [showPreloader, setShowPreloader] = useState(true);
 	const [isAuthed, setIsAuthed] = useState(true);
-
+	//#region auth
 	useEffect(() => {
 		if (TokenService.getAccessToken()) {
-			AuthService.authorize(TokenService.getRefreshToken(), TokenService.getAccessToken()).then(
-				(socket) => {
-					if (socket) {
-						setTimeout(() => {
-							if (!socket.disconnected) {
-								setSocket(socket);
-								setShowPreloader(false);
-								setIsAuthed(true);
-							} else {
-								setShowPreloader(false);
-								setIsAuthed(false);
-							}
-						}, 2000);
-					} else {
+			AuthService.authorize(TokenService.getRefreshToken(), TokenService.getAccessToken()).then((socket) => {
+				if (socket) {
+					socket.on('auth', () => {
+						setSocket(socket);
+						setIsAuthed(true);
+						setShowPreloader(false);
+					});
+					socket.on('unauth', () => {
 						setIsAuthed(false);
 						setShowPreloader(false);
-					}
+					});
+					return () => {
+						socket.off('auth');
+						socket.off('unauthed');
+					};
+				} else {
+					setIsAuthed(false);
+					setShowPreloader(false);
 				}
-			);
+			});
 		} else {
 			setIsAuthed(false);
 			setShowPreloader(false);
 		}
 	}, []);
+	//#endregion
 
 	useEffect(() => {
 		setTimeout(() => {
 			if (socket !== null && !socket.disconnected) {
 				setIsAuthed(true);
 			} else {
-				setIsAuthed(false)
+				setIsAuthed(false);
 			}
 		}, 1000);
 	}, [socket]);
@@ -60,14 +65,19 @@ function App() {
 			<div className="App">
 				<SocketContext.Provider value={{ socket: socket }}>
 					<BrowserRouter>
+						<Notifications />
 						<Switch>
 							<PrivateRoute path="/" setSocket={setSocket} exact>
 								<MatchMaking />
+							</PrivateRoute>
+							<PrivateRoute path="/friends" setSocket={setSocket} exact>
+								<Friends />
 							</PrivateRoute>
 							<Route path={frontAuthUrl}>
 								<Auth setSocket={setSocket} />
 							</Route>
 						</Switch>
+						<Navbar />
 					</BrowserRouter>
 				</SocketContext.Provider>
 			</div>

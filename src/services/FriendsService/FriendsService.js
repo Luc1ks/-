@@ -1,16 +1,18 @@
-const { addFriendUrl, removeFriendUrl } = require("../../urls/friendsUrls");
+const { addFriendUrl, removeFriendUrl, friendListUrl } = require("../../urls/friendsUrls");
 const { default: TokenService } = require("../TokenService/TokenService");
 const { default: JwtErrorService } = require("../JwtErrorService/JwtErrorService");
 
-class UserService {
-    static async addFriend(friendId) {
-        const res = await fetch(addFriendUrl + `/${friendId}`, {
+class FriendsService {
+    static async addFriend(friendName) {
+        const res = await fetch(addFriendUrl, {
             method: 'POST',
             headers: {
-                'Authorization': 'Bearer ' +  TokenService.getAccessToken()
+                'Authorization': 'Bearer ' +  TokenService.getAccessToken(),
+                'Content-type': 'application/json'
             },
             body: JSON.stringify({
-                access_token: TokenService.getAccessToken()
+                access_token: TokenService.getAccessToken(),
+                targetName: friendName
             })
         })
 
@@ -20,7 +22,7 @@ class UserService {
         if (body.err) {
             const result = await JwtErrorService.refreshByErr(body.err);
             if (result) {
-                this.addFriend(friendId);
+                this.addFriend(friendName);
             } else {
                 return false;
             }
@@ -54,6 +56,33 @@ class UserService {
             return true;
         }
     }
+
+    static async getFriends() {
+        const res = await fetch(friendListUrl, {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + TokenService.getAccessToken(),
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                access_token: TokenService.getAccessToken()
+            })
+        })
+
+        const body = await res.json();
+        console.log(body, 'get friends');
+
+        if (body.err) {
+            const result = await JwtErrorService.refreshByErr(body.err);
+            if (result) {
+                this.getFriends();
+            } else {
+                return false;
+            }
+        } else {
+            return body.friends;
+        }
+    }
 }
 
-export default UserService;
+export default FriendsService;

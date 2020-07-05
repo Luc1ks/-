@@ -1,25 +1,32 @@
 import React, { useContext, useState, useEffect } from 'react';
 import SocketContext from '../../context/SocketContext';
 import { CancelBtn, SubmitBtn } from '../btns/btns';
-import InviteService from '../../services/InviteService/InviteService';
-import UserService from '../../services/UserService/UserService';
+import FriendsService from '../../services/FriendsService/FriendsService';
 
 export default function FriendReq({ from, destroy }) {
-	function cancel(id) {
-		destroy()
+	const [removing, setRemoving] = useState('');
+
+	function cancel(username) {
+		setRemoving('remove')
+		setTimeout(() => {
+			destroy()
+		}, 340)
 	}
 
-	function accept(id) {
-		destroy()
-        UserService.addFriend(id)
+	function accept(username) {
+		setRemoving('remove')
+		setTimeout(() => {
+			destroy()
+		}, 340)
+        FriendsService.addFriend(username)
 	}
 
 	return (
-		<div className="invite">
+		<div className={"notification invite " + removing}>
 			<p>Приглашение в друзья от {from.username}</p>
 			<div className="controls">
-				<CancelBtn onClick={() => cancel(from.id)}>Отмена</CancelBtn>
-				<SubmitBtn onClick={() => accept(from.id)}>Принять</SubmitBtn>
+				<CancelBtn onClick={() => cancel(from.username)}>Отмена</CancelBtn>
+				<SubmitBtn onClick={() => accept(from.username)}>Принять</SubmitBtn>
 			</div>
 		</div>
 	);

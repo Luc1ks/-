@@ -1,0 +1,39 @@
+.navbar {
+	position: fixed;
+	bottom: 0;
+	height: 35px;
+	width: 100%;
+
+	background: #1d1d2a;
+
+	display: grid;
+	align-items: center;
+	justify-content: center;
+
+	grid-template-columns: 45px 45px;
+	column-gap: 40px;
+
+	z-index: 20;
+
+	.navLink {
+		color: white;
+		text-decoration: none;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		text-align: center;
+
+		transition: 0.3s;
+
+		font-size: 18px;
+
+		&.active {
+			color: #2dff7d;
+		}
+
+		&:hover {
+			color: #2dff7d;
+		}
+	}
+}

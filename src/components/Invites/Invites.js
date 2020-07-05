@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react'
 import SocketContext from '../../context/SocketContext'
 import { CancelBtn, SubmitBtn } from '../btns/btns';
-import InviteService from '../../services/InviteService/InviteService';
+import InviteService from '../../services/PartyService/PartyService';
 
 export default function Invites() {
     const {socket} = useContext(SocketContext);

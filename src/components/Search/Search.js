@@ -30,7 +30,7 @@ export default function Search() {
 
 	return (
 		<div className="search">
-			<button onClick={() => joinQueue()}>{isInSearch ? 'Отмена' : 'Искать'}</button>
+			<button className={isInSearch ? 'red' : ''} onClick={() => joinQueue()}>{isInSearch ? 'Отмена' : 'Искать'}</button>
 		</div>
 	);
 }

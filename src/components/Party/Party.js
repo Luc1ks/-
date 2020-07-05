@@ -1,8 +1,9 @@
 import React, { useContext, useState, useEffect } from 'react';
 import SocketContext from '../../context/SocketContext';
 import './Party.scss';
-import InviteService from '../../services/InviteService/InviteService';
+import PartyService from '../../services/PartyService/PartyService';
 import { CancelBtn, SubmitBtn } from '../btns/btns';
+import Overlay from '../Overlay/Overlay';
 
 export default function Party() {
 	const { socket } = useContext(SocketContext);
@@ -21,25 +22,27 @@ export default function Party() {
 
 	function sendInvte() {
 		setShowOverlay(false);
-		InviteService.sendInvite(target);
+		console.log(target);
+		PartyService.sendInvite(target);
 		setTarget('');
+	}
+
+	function leave() {
+		PartyService.leaveParty();
 	}
 
 	return (
 		<div className="party">
-			<div className={'overlay ' + showOverlay}>
+			<Overlay show={showOverlay}>
 				<div className="invite">
-					<input
-						type="target"
-						onChange={(e) => setTarget(e.target.value)}
-						value={target}
-					/>
+					<input type="target" onChange={(e) => setTarget(e.target.value)} value={target} />
 					<div className="controls">
 						<CancelBtn onClick={() => setShowOverlay(false)}>Отмена</CancelBtn>
 						<SubmitBtn onClick={() => sendInvte()}>Отправить</SubmitBtn>
 					</div>
 				</div>
-			</div>
+			</Overlay>
+
 			{party.map((player) => {
 				return (
 					<div key={player} className="member">
@@ -50,6 +53,13 @@ export default function Party() {
 			{party.length !== 5 ? (
 				<div className="addMember member" onClick={() => setShowOverlay(true)}>
 					Пригласить игрока
+				</div>
+			) : (
+				''
+			)}
+			{party.length !== 1 ? (
+				<div className="cancel member" onClick={() => leave()}>
+					Выйти
 				</div>
 			) : (
 				''

@@ -12,12 +12,14 @@
 
     outline: none;
 
+    cursor: pointer;
+
     &.cancel {
-        background: rgb(214, 39, 39);
+        background: #e74c3c;
     }
     
     &.submit {
-        background: rgb(111, 17, 218);
+        background: #2bb15e;
     }
 }
 

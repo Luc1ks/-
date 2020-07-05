@@ -1,0 +1,18 @@
+.friend {
+    width: 250px;
+    
+    border-radius: 10px;
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.4);
+    color: white;
+
+    margin: 20px;
+
+    padding: 20px;
+
+    .data {
+        .username {
+            font-size: 20px;
+            text-transform: capitalize;
+        }
+    }
+}
