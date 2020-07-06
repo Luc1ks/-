@@ -36,8 +36,7 @@ class QueueService {
         console.log(body, 'leave queue');
 
         if (body.err) {
-            const token = JwtErrorService.refreshByErr(body.err);
-            if (token) QueueService.LeaveQueue();
+            return false;
         } else {
             return true;
         }
