@@ -12,7 +12,7 @@ class FriendsService {
             },
             body: JSON.stringify({
                 access_token: TokenService.getAccessToken(),
-                targetName: friendName
+                username: friendName
             })
         })
 
@@ -59,14 +59,14 @@ class FriendsService {
 
     static async getFriends() {
         const res = await fetch(friendListUrl, {
-            method: 'POST',
+            method: 'GET',
             headers: {
                 'Authorization': 'Bearer ' + TokenService.getAccessToken(),
-                'Content-type': 'application/json'
+                // 'Content-type': 'application/json'
             },
-            body: JSON.stringify({
-                access_token: TokenService.getAccessToken()
-            })
+            // body: JSON.stringify({
+            //     access_token: TokenService.getAccessToken()
+            // })
         })
 
         const body = await res.json();

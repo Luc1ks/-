@@ -5,11 +5,10 @@ import Auth from '../../views/Auth/Auth';
 
 export default function PrivateRoute({ path, setSocket, children, ...rest }) {
 	const { socket } = useContext(SocketContext);
-
+	
 	if (!socket) {
 		return <Auth setSocket={setSocket} />;
 	} else {
-		console.log(path)
 		return (
 		<Route path={path} {...rest} >
 			{children}

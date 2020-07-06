@@ -13,6 +13,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
 import Friends from './views/Friends/Friends';
 import Notifications from './components/Notifications/Notifications';
+import NotificationsView from './views/NotificationsView/NotificationsView';
 
 function App() {
 	const [socket, setSocket] = useState(null);
@@ -21,25 +22,27 @@ function App() {
 	//#region auth
 	useEffect(() => {
 		if (TokenService.getAccessToken()) {
-			AuthService.authorize(TokenService.getRefreshToken(), TokenService.getAccessToken()).then((socket) => {
-				if (socket) {
-					socket.on('auth', () => {
-						setSocket(socket);
-						setIsAuthed(true);
-						setShowPreloader(false);
-					});
-					socket.on('unauth', () => {
-						setIsAuthed(false);
-						setShowPreloader(false);
-					});
-					return () => {
-						socket.off('auth');
-						socket.off('unauthed');
-					};
-				} else {
-					setIsAuthed(false);
+			AuthService.authorize().then((socket) => {
+				socket.on('connect', () => console.log('connected'));
+
+				socket.on('disconnect', () => {
+					console.log('disconnected');
 					setShowPreloader(false);
-				}
+					setIsAuthed(false);
+				});
+
+				socket.on('auth', () => {
+					console.log('authed');
+					setSocket(socket);
+					setShowPreloader(false);
+					setIsAuthed(true);
+				});
+
+				socket.on('unauth', () => {
+					console.log('unauth');
+					setShowPreloader(false);
+					setIsAuthed(false);
+				});
 			});
 		} else {
 			setIsAuthed(false);
@@ -47,16 +50,6 @@ function App() {
 		}
 	}, []);
 	//#endregion
-
-	useEffect(() => {
-		setTimeout(() => {
-			if (socket !== null && !socket.disconnected) {
-				setIsAuthed(true);
-			} else {
-				setIsAuthed(false);
-			}
-		}, 1000);
-	}, [socket]);
 
 	if (showPreloader) {
 		return <PreLoader />;
@@ -73,6 +66,9 @@ function App() {
 							<PrivateRoute path="/friends" setSocket={setSocket} exact>
 								<Friends />
 							</PrivateRoute>
+							<PrivateRoute path="/notifications" setSocket={setSocket} exact>
+								<NotificationsView />
+							</PrivateRoute>
 							<Route path={frontAuthUrl}>
 								<Auth setSocket={setSocket} />
 							</Route>
@@ -83,6 +79,7 @@ function App() {
 			</div>
 		);
 	} else {
+		console.log('not auhed');
 		return (
 			<div className="App">
 				<Auth setSocket={setSocket} />

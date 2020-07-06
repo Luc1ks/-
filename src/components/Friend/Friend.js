@@ -1,7 +1,7 @@
 import React from 'react';
 
 import './Friend.scss';
-import { SubmitBtn, CancelBtn } from '../btns/btns';
+import { CancelBtn } from '../btns/btns';
 
 export default function Friend({data}) {
     return (

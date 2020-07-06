@@ -12,11 +12,10 @@ export default function ProfileData() {
 
 	useEffect(() => {
 		ProfileService.GetOwnProfie().then((profile) => {
-			console.log(profile)
 			if (profile) {
 				setProfile(profile);
 			} else {
-				window.location.href = '/auth';
+				// window.location.href = '/auth';
 			}
 		});
 	}, []);

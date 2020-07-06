@@ -22,7 +22,7 @@ export default class ProfileService {
                 return false;
             }
         } else {
-            return body.user;
+            return body;
         }
     }
     

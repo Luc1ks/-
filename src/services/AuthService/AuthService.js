@@ -1,4 +1,4 @@
-import { signupUrl, signinUrl, authorizeUrl, refreshUrl } from '../../urls/authUrls';
+import { signupUrl, signinUrl, refreshUrl } from '../../urls/authUrls';
 import io from 'socket.io-client';
 import socketUrl from '../../urls/socketUrl';
 import TokenService from '../TokenService/TokenService';
@@ -17,19 +17,21 @@ class AuthService {
 				so2_nickname: so2_nickname,
 				so2_id: so2_id,
 			}),
-        });
-        
+		});
+
 		const body = await res.json();
-		console.log(body.err);
+		console.log(body);
 
 		if (body.err) {
 			return {
 				err: body.err,
 			};
 		} else {
+			console.log(body.access_token);
+			TokenService.setAccessToken(body.access_token);
 			return {
 				refreshToken: body.refresh_token,
-				accessToken: body.access_token,
+				access_token: body.access_token,
 			};
 		}
 	}
@@ -46,8 +48,8 @@ class AuthService {
 			}),
 		});
 
-        const body = await res.json();
-        console.log(body);
+		const body = await res.json();
+		console.log(body);
 
 		if (body.err) {
 			return {
@@ -59,78 +61,44 @@ class AuthService {
 				accessToken: body.accessToken,
 			};
 		}
-    }
-    
-    static async authorize(refreshToken, accessToken) {
-		try {
-			const res = await fetch(authorizeUrl, {
-				method: 'POST',
-				headers: {
-					'Authorization': 'Bearer ' + accessToken,
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					access_token: accessToken
-				}),
-			})
-			const body = await res.json();
- 
-			if (body && body.err) {
-				const result = await AuthService.refreshAccessToken(refreshToken);
+	}
 
-				if (result.err) {
-					return false
-				} else {
-					const socket = io.connect(socketUrl, {
-						query: {
-							token: result.access_token
-						}
-					});
-
-					TokenService.setRefreshToken(result.access_token);
-					TokenService.setAccessToken(result.refresh_token);
-
-					return socket
-				}
-			} else {
-				const socket = io.connect(socketUrl, {
-					query: {
-						token: accessToken
-					}
-				});
-				return socket
-			}
-		} catch (err) {
-			console.log(err);
-			return false;
-		}
-    }
-
-    static async refreshAccessToken(refreshToken) {
-        const res = await fetch(refreshUrl, {
-			method: 'POST',
-			headers: {
-				'Authorization': 'Bearer ' + refreshToken,
-				'Content-Type': 'application/json'
+	static async authorize() {
+		const socket = io.connect(socketUrl, {
+			query: {
+				token: TokenService.getAccessToken(),
 			},
-			body: JSON.stringify({
-				refresh_token: refreshToken
-			})
+			secure: true,
 		});
 
-        const body = await res.json();
-		
+		return socket;
+	}
+
+	static async refreshAccessToken(refreshToken) {
+		const res = await fetch(refreshUrl, {
+			method: 'POST',
+			headers: {
+				Authorization: 'Bearer ' + refreshToken,
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				refresh_token: refreshToken,
+			}),
+		});
+
+		const body = await res.json();
+
 		if (body.err) {
 			return {
-				err: body.err
-			} 
+				err: body.err,
+			};
 		} else {
 			return {
 				access_token: body.access_token,
 				refresh_token: body.refresh_token,
-			}
+			};
 		}
-    }
+	}
 }
 
 export default AuthService;

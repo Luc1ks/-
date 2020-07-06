@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import './Navbar.scss';
-import { Route, useLocation } from 'react-router';
+import {  useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
+import { v4 } from 'uuid';
 
 
 const routes = [
@@ -13,6 +14,10 @@ const routes = [
     {
         url: '/friends',
         name: 'Friends'
+    },
+    {
+        url: '/notifications',
+        name: 'nots'
     }
 ]
 
@@ -26,7 +31,9 @@ export default function Navbar() {
                     return (
                         <Link
                             className={location.pathname === route.url ? "navLink active" : 'navLink'}
-                            to={route.url}>
+                            to={route.url}
+                            key={v4()}
+                            >
                             {route.name}
                         </Link>
                     )

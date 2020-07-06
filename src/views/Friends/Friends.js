@@ -7,9 +7,7 @@ import './Friends.scss'
 import Friend from '../../components/Friend/Friend';
 
 export default function Friends() {
-    const [friends, setFriends] = useState([{
-        username: ''
-    }]);
+    const [friends, setFriends] = useState([]);
     const [target, setTarget] = useState('');
 
     const [showOverlay, setShowOverlay] = useState(false);

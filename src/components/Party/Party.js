@@ -7,14 +7,22 @@ import Overlay from '../Overlay/Overlay';
 
 export default function Party() {
 	const { socket } = useContext(SocketContext);
-	const [party, setParty] = useState([]);
+	const [party, setParty] = useState({
+		players: []
+	});
 	const [target, setTarget] = useState('');
 	const [showOverlay, setShowOverlay] = useState(false);
+
 	useEffect(() => {
 		socket.on('party', (party) => {
-			setParty(party);
+			console.log(party, 'socket party')
+			setParty(party.data);
 		});
-		socket.emit('party');
+		
+		PartyService.getParty().then(party => {
+			console.log(party, 'fetch party')
+			setParty(party)
+		})
 		return () => {
 			socket.off('party');
 		};
@@ -43,21 +51,21 @@ export default function Party() {
 				</div>
 			</Overlay>
 
-			{party.map((player) => {
+			{party.players.map((player) => {
 				return (
-					<div key={player} className="member">
-						{player}
+					<div key={player.username} className="member">
+						{player.username}
 					</div>
 				);
 			})}
-			{party.length !== 5 ? (
+			{party.players.length !== 5 ? (
 				<div className="addMember member" onClick={() => setShowOverlay(true)}>
 					Пригласить игрока
 				</div>
 			) : (
 				''
 			)}
-			{party.length !== 1 ? (
+			{party.players.length !== 1 ? (
 				<div className="cancel member" onClick={() => leave()}>
 					Выйти
 				</div>

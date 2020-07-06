@@ -9,7 +9,6 @@ export default function Invites() {
 
     useEffect(() => {
         socket.on('invite', invite => {
-            console.log(invite)
             setInvites(invites => {
                 return [...invites, invite.from];
             })

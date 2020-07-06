@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState, useCallback, useRef } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import SocketContext from '../../context/SocketContext';
 import Invite from '../Invite/Invite';
 import FriendReq from '../FriendReq/FriendReq';
@@ -11,50 +11,52 @@ export default function Notifications() {
 	const [notifications, setNotifications] = useState([]);
 
 	useEffect(() => {
-
 		const destroy = (index) => {
-			setNotifications(prevState => {
+			setNotifications((prevState) => {
 				const nots = [...prevState];
 				nots.splice(index, 1);
 				return nots;
-			})
+			});
+		};
+		if (socket) {
+			socket.on('notification', (notification) => {
+				console.log(notification);
+				switch (notification.type) {
+					case 'party/invite':
+						setNotifications((notifications) => {
+							return [
+								...notifications,
+								<Invite
+									invite={notification.data.id}
+									from={notification.data.players[0].username}
+									key={uuid()}
+									destroy={() => destroy(notifications.length)}
+								/>,
+							];
+						});
+						break;
+					case 'friends/add':
+						setNotifications((notifications) => {
+							return [
+								...notifications,
+								<FriendReq
+									from={notification.data}
+									key={uuid()}
+									destroy={() => destroy(notifications.length)}
+								/>,
+							];
+						});
+						break;
+					default:
+						break;
+				}
+			});
 		}
 
-		socket.on('notification', (notification) => {
-			console.log(notification);
-			switch (notification.type) {
-				case 'invite':
-					setNotifications((notifications) => {
-						console.log(notifications.length);
-						return [
-							...notifications,
-							<Invite
-								invite={notification.data.from}
-								key={uuid()}
-								destroy={() => destroy(notifications.length)}
-							/>,
-						];
-					});
-					break;
-				case 'friends/request':
-					setNotifications((notifications) => {
-						return [
-							...notifications,
-							<FriendReq
-								from={notification.data}
-								key={uuid()}
-								destroy={() => destroy(notifications.length)}
-							/>,
-						];
-					});
-					break;
-				default:
-					break;
-			}
-		});
-
 		return () => {
-			socket.off('notification');
+			if (socket) {
+				socket.off('notification');
+			}
 		};
 	}, [socket]);
 

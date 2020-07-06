@@ -1,11 +1,10 @@
-import React, { useContext, useState, useEffect } from 'react';
-import SocketContext from '../../context/SocketContext';
+import React, { useState } from 'react';
 import { CancelBtn, SubmitBtn } from '../btns/btns';
 import PartyService from '../../services/PartyService/PartyService';
 
 import './Invite.scss'
 
-export default function Invite({ invite,  destroy }) {
+export default function Invite({ invite, from,  destroy }) {
 	const [isRemoving, setIsRemoving] = useState('')
 
 	function cancel() {
@@ -25,7 +24,7 @@ export default function Invite({ invite,  destroy }) {
 
 	return (
 		<div className={"notification invite " + isRemoving}>
-			<p>Инвайт от {invite}</p>
+			<p>Инвайт от {from}</p>
 			<div className="controls">
 				<CancelBtn onClick={() => cancel()}>Отмена</CancelBtn>
 				<SubmitBtn onClick={() => accept(invite)}>Принять</SubmitBtn>

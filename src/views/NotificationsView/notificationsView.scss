@@ -1,0 +1,16 @@
+.notificationsView {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+	.notification {
+		background: #1d1d2a;
+        padding: 10px;
+        border-radius: 10px;
+        width: 300px;
+        color: white;
+        margin: 20px;
+	}
+}

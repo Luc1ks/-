@@ -1,4 +1,4 @@
-import { inviteToPartyUrl, acceptInviteUrl, leavePartyUrl } from "../../urls/partyUrls";
+import { inviteToPartyUrl, acceptInviteUrl, leavePartyUrl, getPartyUrl } from "../../urls/partyUrls";
 import TokenService from "../TokenService/TokenService";
 import JwtErrorService from "../JwtErrorService/JwtErrorService";
 
@@ -12,21 +12,21 @@ export default class PartyService {
             },
             body: JSON.stringify({
                 access_token: TokenService.getAccessToken(),
-                targetName: username
+                username: username
             })
         })
         const body = await res.json();
         console.log(body, 'send invite');
 
         if (body.err) {
-            const token = JwtErrorService.refreshByErr(body.err);
-            if (token) this.sendInvite(username);
+            console.error(body.err)
         } else {
             return true;
         }
     }
 
-    static async acceptInvite(from) {
+    static async acceptInvite(id) {
+        console.log(id)
         const res = await fetch(acceptInviteUrl, {
             method: 'POST',
             headers: {
@@ -35,15 +35,14 @@ export default class PartyService {
             },
             body: JSON.stringify({
                 access_token: TokenService.getAccessToken(),
-                from: from
+                id: id
             })
         })
         const body = await res.json();
         console.log(body, 'accept invite');
 
         if (body.err) {
-            const token = JwtErrorService.refreshByErr(body.err);
-            if (token) this.acceptInvite(from);
+           console.error(body.err)
         } else {
             return true;
         }
@@ -68,6 +67,24 @@ export default class PartyService {
             if (token) this.leaveParty();
         } else {
             return true;
+        }
+    }
+
+    static async getParty() {
+        const res = await fetch(getPartyUrl, {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + TokenService.getAccessToken(),
+            }
+        });
+
+        const body = await res.json();
+        console.log(body, 'gett party');
+
+        if (body.err) {
+            console.error(body.err)
+        } else {
+            return body.data;
         }
     }
 }

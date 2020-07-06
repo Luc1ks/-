@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import AuthInput from '../../components/AuthInput/AuthInput';
 import './Auth.scss';
 import AuthService from '../../services/AuthService/AuthService';
-import TokenService from '../../services/TokenService/TokenService';
 
 function Auth({ setSocket }) {
 	const [isLogin, setIsLogin] = useState(false);
@@ -26,14 +25,10 @@ function Auth({ setSocket }) {
 			if (result.err) {
 				setErr(result.err);
 			} else {
-				
-				TokenService.setRefreshToken(result.refreshToken);
-				TokenService.setAccessToken(result.accessToken);
-
-				const socket = await AuthService.authorize(TokenService.getRefreshToken(), TokenService.getAccessToken());
-				if (socket) {
-					setSocket(socket);
-				}
+				await AuthService.authorize().then((socket) => {
+					console.log(socket, 'signing up')
+					setSocket(socket)
+				});
 			}
 		} else {
 			setErr('Минимальная длинна каждого поля 2 символа');

@@ -1,5 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
-import SocketContext from '../../context/SocketContext';
+import React, { useState } from 'react';
 import { CancelBtn, SubmitBtn } from '../btns/btns';
 import FriendsService from '../../services/FriendsService/FriendsService';
 

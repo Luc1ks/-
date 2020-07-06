@@ -29,11 +29,10 @@
 
 @keyframes notifRemove {
 	0% {
-		transform: scaleX(1);
-		transform: scale(1);
+		transform: scaleX(1) scale(1) scaleZ(1) scaleY(1);
 	}
 	100% {
-		transform: scale(0);
-		transform: scaleX(0);
+		transform: scaleX(0) scale(0) scaleZ(0) scaleY(0);
+
 	}
 }

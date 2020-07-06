@@ -5,21 +5,20 @@ import JwtErrorService from "../JwtErrorService/JwtErrorService";
 class QueueService {
     static async JoinQueue() {
         const res = await fetch(joinQueueUrl, {
-            method: 'POST',
+            method: 'GET',
             headers: {
                 'Authorization': 'Bearer ' + TokenService.getAccessToken(),
                 'Content-type': 'application/json'
             },
-            body: JSON.stringify({
-                access_token: TokenService.getAccessToken()
-            })
+            // body: JSON.stringify({
+            //     access_token: TokenService.getAccessToken()
+            // })
         })
         const body = await res.json();
         console.log(body, 'join queue');
 
         if (body.err) {
-            const token = JwtErrorService.refreshByErr(body.err);
-            if (token) QueueService.JoinQueue();
+            return false;
         } else {
             return true;
         }
@@ -27,14 +26,11 @@ class QueueService {
 
     static async LeaveQueue() {
         const res = await fetch(leaveQueueUrl, {
-            method: 'POST',
+            method: 'GET',
             headers: {
                 'Authorization': 'Bearer ' + TokenService.getAccessToken(),
                 'Content-type': 'application/json'
-            },
-            body: JSON.stringify({
-                access_token: TokenService.getAccessToken()
-            })
+            }
         })
         const body = await res.json();
         console.log(body, 'leave queue');
