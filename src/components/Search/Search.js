@@ -7,27 +7,40 @@ import PartyService from '../../services/PartyService/PartyService';
 export default function Search() {
 	const { socket } = useContext(SocketContext);
 	const [isInSearch, setIsInSearch] = useState(false);
+	const [shake, setShake] = useState('');
 
 	function joinQueue() {
 		if (isInSearch) {
-			QueueService.LeaveQueue().then(result => result ? setIsInSearch(false) : '');
+			QueueService.LeaveQueue().then((result) => (result ? setIsInSearch(false) : shakeAnime()));
 		} else {
-			QueueService.JoinQueue().then(result => result ? setIsInSearch(true) : '');
+			QueueService.JoinQueue().then((result) => (result ? setIsInSearch(true) : shakeAnime()));
 		}
 	}
 
+	function shakeAnime() {
+
+		setShake('shake');
+		setTimeout(() => {
+			setShake('');
+		}, 500);
+	}
+
 	useEffect(() => {
-		PartyService.getParty().then(party => {
+		PartyService.getParty().then((party) => {
 			if (party.status === 'QUEUE') {
 				setIsInSearch(true);
 			} else {
 				setIsInSearch(false);
 			}
-		})
+		});
 
-		socket.on('queue', (isInQueue) => {
-			console.log(isInQueue, 'search')
-			setIsInSearch(isInQueue);
+		socket.on('queue', (context) => {
+			console.log(context, 'search');
+			if (context.data) {
+				setIsInSearch(true);
+			} else {
+				setIsInSearch(false);
+			}
 		});
 
 		return () => {
@@ -37,7 +50,9 @@ export default function Search() {
 
 	return (
 		<div className="search">
-			<button className={isInSearch ? 'red' : ''} onClick={() => joinQueue()}>{isInSearch ? 'Отмена' : 'Искать'}</button>
+			<button className={(isInSearch ? 'red ' : ' ') + shake} onClick={() => joinQueue()}>
+				{isInSearch ? 'Отмена' : 'Искать'}
+			</button>
 		</div>
 	);
 }
