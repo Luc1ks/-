@@ -15,7 +15,7 @@ export default function Friends() {
     useEffect(() => {
         FriendsService.getFriends().then(friends => {
             if (friends) {
-                console.log(friends)
+                console.log(friends[0])
                 setFriends(friends);
             }
         })
@@ -25,6 +25,14 @@ export default function Friends() {
         setShowOverlay(false);
         FriendsService.addFriend(target);
         setTarget('');
+    }
+
+    function destroy(index) {
+        setFriends(prevState => {
+            const friends = [...prevState];
+            friends.splice(index);
+            return friends;
+        })
     }
 
     return (
@@ -41,9 +49,9 @@ export default function Friends() {
                     </div>
                 </div>
             </Overlay>
-            {friends.map(friend => {
+            {friends.map((friend, index) => {
                 return (
-                    <Friend  data={friend} />
+                    <Friend key={friend.username} data={friend} destroy={() => destroy(index)}/>
                 )
             })}
         </div>

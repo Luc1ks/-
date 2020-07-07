@@ -1,4 +1,4 @@
-import { inviteToPartyUrl, acceptInviteUrl, leavePartyUrl, getPartyUrl } from "../../urls/partyUrls";
+import { inviteToPartyUrl, acceptInviteUrl, leavePartyUrl, getPartyUrl, rejectInviteUrl } from "../../urls/partyUrls";
 import TokenService from "../TokenService/TokenService";
 import JwtErrorService from "../JwtErrorService/JwtErrorService";
 
@@ -40,6 +40,30 @@ export default class PartyService {
         })
         const body = await res.json();
         console.log(body, 'accept invite');
+
+        if (body.err) {
+           console.error(body.err)
+        } else {
+            return true;
+        }
+    }
+
+    static async rejectInvite(id) {
+        console.log(id);
+
+        const res = await fetch(rejectInviteUrl, {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + TokenService.getAccessToken(),
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: id
+            })
+        });
+
+        const body = await res.json();
+        console.log(body, 'reject invite');
 
         if (body.err) {
            console.error(body.err)

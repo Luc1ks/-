@@ -4,6 +4,13 @@ import './Search.scss';
 import QueueService from '../../services/QueueService/QueueService';
 import PartyService from '../../services/PartyService/PartyService';
 
+const partyStatuses = {
+	'WAIT': 0,
+	'QUEUE': 1,
+	'IN_GAME': 2
+}
+
+
 export default function Search() {
 	const { socket } = useContext(SocketContext);
 	const [isInSearch, setIsInSearch] = useState(false);
@@ -27,7 +34,7 @@ export default function Search() {
 
 	useEffect(() => {
 		PartyService.getParty().then((party) => {
-			if (party.status === 'QUEUE') {
+			if (party.status === partyStatuses.QUEUE) {
 				setIsInSearch(true);
 			} else {
 				setIsInSearch(false);

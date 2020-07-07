@@ -32,13 +32,14 @@ class FriendsService {
     }
 
     static async removeFriend(friendId) {
-        const res = await fetch(removeFriendUrl + `/${friendId}`, {
+        const res = await fetch(removeFriendUrl, {
             method: 'POST',
             headers: {
-                'Authorization': 'Bearer ' + TokenService.getAccessToken()
+                'Authorization': 'Bearer ' + TokenService.getAccessToken(),
+                'Content-type': 'application/json'
             },
             body: JSON.stringify({
-                access_token: TokenService.getAccessToken()
+                id: friendId
             })
         })
 
@@ -46,12 +47,8 @@ class FriendsService {
         console.log(body, 'remove friend');
 
         if (body.err) {
-            const result = await JwtErrorService.refreshByErr(body.err);
-            if (result) {
-                this.removeFriend(friendId);
-            } else {
-                return false;
-            }
+            console.error(body.err);
+            return false;
         } else {
             return true;
         }
@@ -73,14 +70,10 @@ class FriendsService {
         console.log(body, 'get friends');
 
         if (body.err) {
-            const result = await JwtErrorService.refreshByErr(body.err);
-            if (result) {
-                this.getFriends();
-            } else {
-                return false;
-            }
+            console.error(body.err);
+            return false;
         } else {
-            return body.friends;
+            return body;
         }
     }
 }

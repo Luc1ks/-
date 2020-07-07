@@ -18,7 +18,6 @@ import NotificationsView from './views/NotificationsView/NotificationsView';
 function App() {
 	const [socket, setSocket] = useState(null);
 	const [showPreloader, setShowPreloader] = useState(true);
-	const [isAuthed, setIsAuthed] = useState(true);
 	//#region auth
 	useEffect(() => {
 		if (TokenService.getAccessToken()) {
@@ -28,24 +27,20 @@ function App() {
 				socket.on('disconnect', () => {
 					console.log('disconnected');
 					setShowPreloader(false);
-					setIsAuthed(false);
 				});
 
 				socket.on('auth', () => {
 					console.log('authed');
 					setSocket(socket);
 					setShowPreloader(false);
-					setIsAuthed(true);
 				});
 
 				socket.on('unauth', () => {
 					console.log('unauth');
 					setShowPreloader(false);
-					setIsAuthed(false);
 				});
 			});
 		} else {
-			setIsAuthed(false);
 			setShowPreloader(false);
 		}
 	}, []);
@@ -53,7 +48,7 @@ function App() {
 
 	if (showPreloader) {
 		return <PreLoader />;
-	} else if (isAuthed) {
+	} else if (socket) {
 		return (
 			<div className="App">
 				<SocketContext.Provider value={{ socket: socket }}>

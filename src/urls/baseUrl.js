@@ -1,3 +1,3 @@
-const baseUrl = 'http://185.251.88.148:4000';
+const baseUrl = 'https://totalifydev.tk';
 
 export default baseUrl;

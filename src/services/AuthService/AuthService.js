@@ -8,6 +8,7 @@ class AuthService {
 		const res = await fetch(signupUrl, {
 			method: 'POST',
 			headers: {
+				'Authorization': 'Bearer ' + TokenService.getAccessToken(),
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({
@@ -41,6 +42,7 @@ class AuthService {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
+				'Authorization': 'Bearer ' + TokenService.getAccessToken(),
 			},
 			body: JSON.stringify({
 				username: username,
@@ -56,9 +58,11 @@ class AuthService {
 				err: body.err,
 			};
 		} else {
+			TokenService.setAccessToken(body.access_token);
+
 			return {
 				refreshToken: body.refreshToken,
-				accessToken: body.accessToken,
+				accessToken: body.access_token,
 			};
 		}
 	}

@@ -4,30 +4,31 @@ import PartyService from '../../services/PartyService/PartyService';
 
 import './Invite.scss'
 
-export default function Invite({ invite, from,  destroy }) {
+export default function Invite({ id, from,  destroy }) {
 	const [isRemoving, setIsRemoving] = useState('')
 
-	function cancel() {
+	function cancel(id) {
 		setIsRemoving('remove')
 		setTimeout(() => {
 			destroy();
 		}, 340)
+		PartyService.rejectInvite(id);
 	}
 
-	function accept(from) {
+	function accept(id) {
 		setIsRemoving('remove')
 		setTimeout(() => {
 			destroy();
 		}, 340)
-		PartyService.acceptInvite(from);
+		PartyService.acceptInvite(id);
 	}
 
 	return (
 		<div className={"notification invite " + isRemoving}>
 			<p>Инвайт от {from}</p>
 			<div className="controls">
-				<CancelBtn onClick={() => cancel()}>Отмена</CancelBtn>
-				<SubmitBtn onClick={() => accept(invite)}>Принять</SubmitBtn>
+				<CancelBtn onClick={() => cancel(id)}>Отмена</CancelBtn>
+				<SubmitBtn onClick={() => accept(id)}>Принять</SubmitBtn>
 			</div>
 		</div>
 	);

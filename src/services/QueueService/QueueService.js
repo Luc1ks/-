@@ -1,6 +1,5 @@
 import { joinQueueUrl, leaveQueueUrl } from "../../urls/queueUrls";
 import TokenService from "../TokenService/TokenService";
-import JwtErrorService from "../JwtErrorService/JwtErrorService";
 
 class QueueService {
     static async JoinQueue() {

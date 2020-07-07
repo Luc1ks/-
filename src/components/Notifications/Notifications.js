@@ -27,7 +27,7 @@ export default function Notifications() {
 							return [
 								...notifications,
 								<Invite
-									invite={notification.data.id}
+									id={notification.data.id}
 									from={notification.data.players[0].username}
 									key={uuid()}
 									destroy={() => destroy(notifications.length)}

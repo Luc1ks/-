@@ -11,6 +11,7 @@ function Auth({ setSocket }) {
 	const [so2_id, setSo2_id] = useState('');
 	const [so2_nickname, setSo2_nickname] = useState('');
 	const [err, setErr] = useState('');
+	const [isAuthtorizing, setIsAuthtorizing] = useState(false);
 
 	async function signUp() {
 		if (
@@ -18,16 +19,19 @@ function Auth({ setSocket }) {
 			username.length > 2 &&
 			password.length > 2 &&
 			so2_id.length > 2 &&
-			so2_nickname.length > 2
+			so2_nickname.length > 2 &&
+			!isAuthtorizing
 		) {
+			setIsAuthtorizing(true);
 			const result = await AuthService.singup(username, password, email, so2_nickname, so2_id);
 			
 			if (result.err) {
 				setErr(result.err);
+				setIsAuthtorizing(false);
 			} else {
 				await AuthService.authorize().then((socket) => {
-					console.log(socket, 'signing up')
-					setSocket(socket)
+					console.log(socket, 'signing up');
+					setSocket(socket);
 				});
 			}
 		} else {
@@ -35,23 +39,34 @@ function Auth({ setSocket }) {
 		}
 	}
 
+	async function signIn() {
+		if (username.length > 2 && password.length > 2 && isAuthtorizing === false) {
+			setIsAuthtorizing(true);
+			const signinResult = await AuthService.signin(username, password);
+
+			if (!signinResult.err) {
+				const socket = await AuthService.authorize();
+				setSocket(socket);
+			} else {
+				setErr(signinResult.err);
+				setIsAuthtorizing(false);
+			}
+		} else {
+			setErr('Минимальная длинна челена 2 символа')
+		}
+	}
+
 	if (isLogin) {
 		return (
 			<div className="auth">
-				<AuthInput
-					placeHodler="Никнейм"
-					name="email"
-					onChange={(e) => setUsername(e.target.value)}
-				/>
-				<AuthInput
-					placeHodler="Пароль"
-					name="password"
-					onChange={(e) => setUsername(e.target.value)}
-				/>
+				<AuthInput placeHodler="Никнейм" name="email" onChange={(e) => setUsername(e.target.value)} />
+				<AuthInput placeHodler="Пароль" name="password" onChange={(e) => setPassword(e.target.value)} />
 
 				<p className="err">{err}</p>
-				<button className="signin">Войти</button>
-				<button className="signup" onClick={() => setIsLogin(false)}>
+				<button className={`signin ${isAuthtorizing}`} onClick={() => signIn()}>
+					Войти
+				</button>
+				<button className={`signup ${isAuthtorizing}`} onClick={() => setIsLogin(false)}>
 					Нет аккаунта
 				</button>
 			</div>
@@ -59,30 +74,17 @@ function Auth({ setSocket }) {
 	} else {
 		return (
 			<div className="auth">
-				<AuthInput
-					placeHodler="Email"
-					name="new email"
-					onChange={(e) => setEmail(e.target.value)}
-				/>
-				<AuthInput
-					placeHodler="Никнейм"
-					name="new nickname"
-					onChange={(e) => setUsername(e.target.value)}
-				/>
-				<AuthInput
-					placeHodler="Пароль"
-					name="new password"
-					onChange={(e) => setPassword(e.target.value)}
-				/>
-				<AuthInput
-					placeHodler="SO2 никнейм"
-					onChange={(e) => setSo2_nickname(e.target.value)}
-				/>
+				<AuthInput placeHodler="Email" name="new email" onChange={(e) => setEmail(e.target.value)} />
+				<AuthInput placeHodler="Никнейм" name="new nickname" onChange={(e) => setUsername(e.target.value)} />
+				<AuthInput placeHodler="Пароль" name="new password" onChange={(e) => setPassword(e.target.value)} />
+				<AuthInput placeHodler="SO2 никнейм" onChange={(e) => setSo2_nickname(e.target.value)} />
 				<AuthInput placeHodler="SO2 id" onChange={(e) => setSo2_id(e.target.value)} />
 
 				<p className="err">{err}</p>
-				<button className="signup" onClick={() => signUp()}>Зарегистрироваться</button>
-				<button className="signin" onClick={() => setIsLogin(true)}>
+				<button className={`signup ${isAuthtorizing}`} onClick={() => signUp()}>
+					Зарегистрироваться
+				</button>
+				<button className={`signin ${isAuthtorizing}`} onClick={() => setIsLogin(true)}>
 					Уже есть аккаунт
 				</button>
 			</div>
