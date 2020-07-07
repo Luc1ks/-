@@ -1,19 +1,12 @@
 import { joinQueueUrl, leaveQueueUrl } from "../../urls/queueUrls";
 import TokenService from "../TokenService/TokenService";
+import FetchService from "../FetchService/FetchService";
 
 class QueueService {
     static async JoinQueue() {
-        const res = await fetch(joinQueueUrl, {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + TokenService.getAccessToken(),
-                'Content-type': 'application/json'
-            },
-            // body: JSON.stringify({
-            //     access_token: TokenService.getAccessToken()
-            // })
-        })
-        const body = await res.json();
+        const res = await FetchService.get(joinQueueUrl);
+
+        const body = await res.body;
         console.log(body, 'join queue');
 
         if (body.err) {
@@ -24,14 +17,9 @@ class QueueService {
     }
 
     static async LeaveQueue() {
-        const res = await fetch(leaveQueueUrl, {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + TokenService.getAccessToken(),
-                'Content-type': 'application/json'
-            }
-        })
-        const body = await res.json();
+        const res = await FetchService.get(leaveQueueUrl);
+        
+        const body = await res.body;
         console.log(body, 'leave queue');
 
         if (body.err) {

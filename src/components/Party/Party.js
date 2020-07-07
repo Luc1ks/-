@@ -2,32 +2,45 @@ import React, { useContext, useState, useEffect } from 'react';
 import SocketContext from '../../context/SocketContext';
 import './Party.scss';
 import PartyService from '../../services/PartyService/PartyService';
-import { CancelBtn, SubmitBtn } from '../btns/btns';
+import { CancelBtn, SubmitBtn, DeleteBtn } from '../btns/btns';
 import Overlay from '../Overlay/Overlay';
-
+import ProfileService from '../../services/ProfileService/ProfileService';
 
 export default function Party() {
 	const { socket } = useContext(SocketContext);
 	const [party, setParty] = useState({
-		players: []
+		players: [],
+		owner: ''
+	});
+	const [user, setUser] = useState({
+		id: '',
+		username: '',
 	});
 	const [target, setTarget] = useState('');
 	const [showOverlay, setShowOverlay] = useState(false);
 
 	useEffect(() => {
 		socket.on('party', (party) => {
-			console.log(party, 'socket party')
+			console.log(party, 'socket party');
 			setParty(party.data);
 		});
-		
-		PartyService.getParty().then(party => {
-			console.log(party, 'fetch party')
-			setParty(party)
-		})
+
+		PartyService.getParty().then((party) => {
+			console.log(party, 'fetch party');
+			setParty(party);
+		});
 		return () => {
 			socket.off('party');
 		};
 	}, [socket]);
+
+	useEffect(() => {
+		ProfileService.GetOwnProfie().then((profile) => {
+			if (profile) {
+				setUser(profile);
+			}
+		});
+	}, []);
 
 	function sendInvte() {
 		setShowOverlay(false);
@@ -38,6 +51,10 @@ export default function Party() {
 
 	function leave() {
 		PartyService.leaveParty();
+	}
+
+	function kick(username) {
+		PartyService.kick(username);
 	}
 
 	return (
@@ -56,6 +73,16 @@ export default function Party() {
 				return (
 					<div key={player.username} className="member">
 						{player.username}
+						{user.id === party.owner && user.username !== player.username ? (
+							<DeleteBtn onClick={() => kick(player.username)} />
+						) : (
+								''
+							)}
+						{
+							party.owner === player.id ?
+								<div className="crown"></div>
+								: ''
+						}
 					</div>
 				);
 			})}
@@ -64,15 +91,15 @@ export default function Party() {
 					Пригласить игрока
 				</div>
 			) : (
-				''
-			)}
+					''
+				)}
 			{party.players.length !== 1 ? (
 				<div className="cancel member" onClick={() => leave()}>
 					Выйти
 				</div>
 			) : (
-				''
-			)}
+					''
+				)}
 		</div>
 	);
 }

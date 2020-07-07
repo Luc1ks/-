@@ -16,3 +16,9 @@ export function SubmitBtn({ children, ...rest }) {
 		</button>
 	);
 }
+
+export function DeleteBtn({...rest}) {
+	return (
+		<button className="deleteBtn" {...rest}>X</button>
+	)
+}

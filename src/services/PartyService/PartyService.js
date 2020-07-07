@@ -1,114 +1,107 @@
-import { inviteToPartyUrl, acceptInviteUrl, leavePartyUrl, getPartyUrl, rejectInviteUrl } from "../../urls/partyUrls";
-import TokenService from "../TokenService/TokenService";
-import JwtErrorService from "../JwtErrorService/JwtErrorService";
+import {
+	inviteToPartyUrl,
+	acceptInviteUrl,
+	leavePartyUrl,
+	getPartyUrl,
+	rejectInviteUrl,
+	kickFromPartyUrl,
+} from '../../urls/partyUrls';
+import TokenService from '../TokenService/TokenService';
+import FetchService from '../FetchService/FetchService';
 
 export default class PartyService {
-    static async sendInvite(username) {
-        const res = await fetch(inviteToPartyUrl, {
-            method: 'POST',
-            headers: {
-                'Authorization': 'Bearer ' + TokenService.getAccessToken(),
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify({
-                access_token: TokenService.getAccessToken(),
-                username: username
-            })
-        })
-        const body = await res.json();
-        console.log(body, 'send invite');
+	static async sendInvite(username) {
+		const res = await FetchService.post(inviteToPartyUrl, {
+			username: username,
+		});
+		const body = await res.body;
+		console.log(body, 'send invite');
 
-        if (body.err) {
-            console.error(body.err)
-        } else {
-            return true;
-        }
-    }
+		if (body.err) {
+			console.error(body.err);
+		} else {
+			return true;
+		}
+	}
 
-    static async acceptInvite(id) {
-        console.log(id)
-        const res = await fetch(acceptInviteUrl, {
-            method: 'POST',
-            headers: {
-                'Authorization': 'Bearer ' + TokenService.getAccessToken(),
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify({
-                access_token: TokenService.getAccessToken(),
-                id: id
-            })
-        })
-        const body = await res.json();
-        console.log(body, 'accept invite');
+	static async acceptInvite(id) {
+		console.log(id);
+		const res = await FetchService.post(acceptInviteUrl, {
+			id: id,
+		});
 
-        if (body.err) {
-           console.error(body.err)
-        } else {
-            return true;
-        }
-    }
+		const body = await res.body;
+		console.log(body, 'accept invite');
 
-    static async rejectInvite(id) {
-        console.log(id);
+		if (body.err) {
+			console.error(body.err);
+			return false;
+		} else {
+			return true;
+		}
+	}
 
-        const res = await fetch(rejectInviteUrl, {
-            method: 'POST',
-            headers: {
-                'Authorization': 'Bearer ' + TokenService.getAccessToken(),
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify({
-                id: id
-            })
-        });
+	static async rejectInvite(id) {
+		console.log(id);
 
-        const body = await res.json();
-        console.log(body, 'reject invite');
+		const res = await FetchService.post(rejectInviteUrl, {
+			id: id,
+		});
 
-        if (body.err) {
-           console.error(body.err)
-        } else {
-            return true;
-        }
-    }
+		const body = await res.body;
+		console.log(body, 'reject invite');
 
-    static async leaveParty() {
-        const res = await fetch(leavePartyUrl, {
-            method: 'POST',
-            headers: {
-                'Authorization': 'Bearer ' + TokenService.getAccessToken(),
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify({
-                access_token: TokenService.getAccessToken()
-            })
-        })
-        const body = await res.json();
-        console.log(body, 'leave party');
+		if (body.err) {
+			console.error(body.err);
+			return false;
+		} else {
+			return true;
+		}
+	}
 
-        if (body.err) {
-            const token = JwtErrorService.refreshByErr(body.err);
-            if (token) this.leaveParty();
-        } else {
-            return true;
-        }
-    }
+	static async leaveParty() {
+		const res = await FetchService.post(leavePartyUrl);
 
-    static async getParty() {
-        const res = await fetch(getPartyUrl, {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + TokenService.getAccessToken(),
-            }
-        });
+		const body = await res.body;
+		console.log(body, 'leave party');
 
-        const body = await res.json();
-        console.log(body, 'gett party');
+		if (body.err) {
+			console.error(body.err);
+			return false;
+		} else {
+			return true;
+		}
+	}
 
-        if (body.err) {
-            console.error(body.err)
-        } else {
-            return body.data;
-        }
-    }
+	static async kick(username) {
+		const res = await FetchService.post(kickFromPartyUrl, {
+			username: username,
+		});
+		console.log(res.body);
+
+		if (res.body.err) {
+			console.error(res.body.err);
+			return false;
+		} else {
+			return res.body;
+		}
+	}
+
+	static async getParty() {
+		const res = await fetch(getPartyUrl, {
+			method: 'GET',
+			headers: {
+				Authorization: 'Bearer ' + TokenService.getAccessToken(),
+			},
+		});
+
+		const body = await res.json();
+		console.log(body, 'gett party');
+
+		if (body.err) {
+			console.error(body.err);
+		} else {
+			return body.data;
+		}
+	}
 }

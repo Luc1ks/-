@@ -1,7 +1,7 @@
 import React from 'react';
 
 import './Friend.scss';
-import { CancelBtn, SubmitBtn } from '../btns/btns';
+import { SubmitBtn, DeleteBtn } from '../btns/btns';
 import PartyService from '../../services/PartyService/PartyService';
 import FriendsService from '../../services/FriendsService/FriendsService';
 
@@ -22,8 +22,8 @@ export default function Friend({data, destroy = () => {}}) {
                 <div className="username">{data.username}</div>
             </div>
             <div className="controls">
-                <CancelBtn onClick={() => RemoveFriend()}>Удалить</CancelBtn>
                 <SubmitBtn onClick={() => InviteToParty()}>Пригласить</SubmitBtn>
+                <DeleteBtn onClick={() => RemoveFriend()} />
             </div>
         </div>
     )

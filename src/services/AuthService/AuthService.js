@@ -2,25 +2,19 @@ import { signupUrl, signinUrl, refreshUrl } from '../../urls/authUrls';
 import io from 'socket.io-client';
 import socketUrl from '../../urls/socketUrl';
 import TokenService from '../TokenService/TokenService';
+import FetchService from '../FetchService/FetchService';
 
 class AuthService {
 	static async singup(username, password, email, so2_nickname, so2_id) {
-		const res = await fetch(signupUrl, {
-			method: 'POST',
-			headers: {
-				'Authorization': 'Bearer ' + TokenService.getAccessToken(),
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				username: username,
-				password: password,
-				email: email,
-				so2_nickname: so2_nickname,
-				so2_id: so2_id,
-			}),
+		const res = await FetchService.post(signupUrl, {
+			username: username,
+			password: password,
+			email: email,
+			so2_nickname: so2_nickname,
+			so2_id: so2_id,
 		});
 
-		const body = await res.json();
+		const body = res.body;
 		console.log(body);
 
 		if (body.err) {
@@ -38,19 +32,12 @@ class AuthService {
 	}
 
 	static async signin(username, password) {
-		const res = await fetch(signinUrl, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': 'Bearer ' + TokenService.getAccessToken(),
-			},
-			body: JSON.stringify({
-				username: username,
-				password: password,
-			}),
+		const res = await FetchService.post(signinUrl, {
+			username: username,
+			password: password,
 		});
 
-		const body = await res.json();
+		const body = res.body;
 		console.log(body);
 
 		if (body.err) {
@@ -79,18 +66,10 @@ class AuthService {
 	}
 
 	static async refreshAccessToken(refreshToken) {
-		const res = await fetch(refreshUrl, {
-			method: 'POST',
-			headers: {
-				Authorization: 'Bearer ' + refreshToken,
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				refresh_token: refreshToken,
-			}),
+		const res = await FetchService.post(refreshUrl, {
+			refresh_token: refreshToken,
 		});
-
-		const body = await res.json();
+		const body = await res.body;
 
 		if (body.err) {
 			return {

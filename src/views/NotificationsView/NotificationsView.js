@@ -1,7 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react';
-import SocketContext from '../../context/SocketContext';
+import React, { useState, useEffect } from 'react';
 import NotificationsService from '../../services/NotificationsService/NotificationsService';
-import { v4 } from 'uuid';
 import FriendReq from '../../components/FriendReq/FriendReq';
 import Invite from '../../components/Invite/Invite';
 

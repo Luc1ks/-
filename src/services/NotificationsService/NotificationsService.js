@@ -1,16 +1,11 @@
 import { getNotsUrl } from '../../urls/notificationsUrls';
-import TokenService from '../TokenService/TokenService';
+import FetchService from '../FetchService/FetchService';
 
 export default class NotificationsService {
 	static async get() {
-		const res = await fetch(getNotsUrl, {
-			method: 'GET',
-			headers: {
-				Authorization: 'Bearer ' + TokenService.getAccessToken(),
-			},
-        });
+		const res = await FetchService.get(getNotsUrl);
         
-        const body = await res.json();
+        const body = await res.body;
         console.log(body, 'get notifications')
 
         if (body.err) {
