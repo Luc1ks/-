@@ -88,14 +88,9 @@ export default class PartyService {
 	}
 
 	static async getParty() {
-		const res = await fetch(getPartyUrl, {
-			method: 'GET',
-			headers: {
-				Authorization: 'Bearer ' + TokenService.getAccessToken(),
-			},
-		});
+		const res = await FetchService.get(getPartyUrl)
 
-		const body = await res.json();
+		const body = await res.body;
 		console.log(body, 'gett party');
 
 		if (body.err) {
