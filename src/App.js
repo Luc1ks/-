@@ -14,6 +14,8 @@ import Navbar from './components/Navbar/Navbar';
 import Friends from './views/Friends/Friends';
 import Notifications from './components/Notifications/Notifications';
 import NotificationsView from './views/NotificationsView/NotificationsView';
+import Redirects from './components/Redirects/Redirects';
+import Game from './views/Game/Game';
 
 function App() {
 	const [socket, setSocket] = useState(null);
@@ -64,11 +66,15 @@ function App() {
 							<PrivateRoute path="/notifications" setSocket={setSocket} exact>
 								<NotificationsView />
 							</PrivateRoute>
+							<PrivateRoute path="/game/lobby" setSocket={setSocket} exact>
+								<Game />
+							</PrivateRoute>
 							<Route path={frontAuthUrl}>
 								<Auth setSocket={setSocket} />
 							</Route>
 						</Switch>
 						<Navbar />
+						<Redirects />
 					</BrowserRouter>
 				</SocketContext.Provider>
 			</div>

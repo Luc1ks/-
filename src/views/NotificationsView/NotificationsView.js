@@ -51,7 +51,7 @@ export default function NotificationsView() {
             {
                 nots.party.map((party, index) => {
                     return (
-                        <Invite from={party.players[0].username} id={party.id} destroy={() => destroyPartyReq(index)}/>
+                        <Invite from={party.players.find(x => x.id === party.owner).username} id={party.id} destroy={() => destroyPartyReq(index)}/>
                     )
                 })
             }

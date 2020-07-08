@@ -38,7 +38,6 @@ export default class FetchService {
 			method: 'POST',
 			headers: {
 				Authorization: 'Bearer ' + TokenService.getAccessToken(),
-				creditionals: 'include',
 				'Content-type': 'application/json',
 				...headers,
 			},

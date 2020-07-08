@@ -3,22 +3,24 @@ import ProfileService from '../../services/ProfileService/ProfileService';
 
 import './ProfileData.scss';
 
-export default function ProfileData() {
+export default function ProfileData({ profileData = null }) {
 	const [profile, setProfile] = useState({
 		username: '',
 		rating: 0,
-		bio: ''
+		bio: '',
 	});
 
 	useEffect(() => {
-		ProfileService.GetOwnProfie().then((profile) => {
-			if (profile) {
-				setProfile(profile);
-			} else {
-				// window.location.href = '/auth';
-			}
-		});
-	}, []);
+		if (profileData) {
+			setProfile(profileData);
+		} else {
+			ProfileService.GetOwnProfie().then((profile) => {
+				if (profile) {
+					setProfile(profile);
+				}
+			});
+		}
+	}, [profileData]);
 
 	return (
 		<div className="userData">
@@ -27,9 +29,7 @@ export default function ProfileData() {
 				<div className="username">{profile.username}</div>
 				<div className="rating">{profile.rating}</div>
 			</div>
-			<div className="bio">
-				{profile.bio}
-			</div>
+			<div className="bio">{profile.bio}</div>
 		</div>
 	);
 }

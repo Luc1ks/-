@@ -6,7 +6,7 @@ import { CancelBtn, SubmitBtn, DeleteBtn } from '../btns/btns';
 import Overlay from '../Overlay/Overlay';
 import ProfileService from '../../services/ProfileService/ProfileService';
 
-export default function Party() {
+export default function Party({ partyData = null, profileData = null }) {
 	const { socket } = useContext(SocketContext);
 	const [party, setParty] = useState({
 		players: [],
@@ -25,22 +25,40 @@ export default function Party() {
 			setParty(party.data);
 		});
 
-		PartyService.getParty().then((party) => {
-			console.log(party, 'fetch party');
-			setParty(party);
-		});
+		if (!partyData) {
+			PartyService.getParty().then((party) => {
+				console.log(party, 'fetch party');
+				setParty(party);
+			})
+		}
+
 		return () => {
 			socket.off('party');
 		};
-	}, [socket]);
+	}, [socket, partyData]);
 
 	useEffect(() => {
-		ProfileService.GetOwnProfie().then((profile) => {
-			if (profile) {
-				setUser(profile);
-			}
-		});
-	}, []);
+		if (!profileData) {
+			ProfileService.GetOwnProfie().then((profile) => {
+				if (profile) {
+					setUser(profile);
+				}
+			});
+		}
+	}, [profileData]);
+
+	useEffect(() => {
+		if (partyData) {
+			setParty(partyData)
+		}
+		if (profileData) {
+			setUser(profileData)
+		}
+	}, [partyData, profileData])
+
+	useEffect(() => {
+		party.players.sort((a, b) => b.id - a.id);
+	}, [party])
 
 	function sendInvte() {
 		setShowOverlay(false);

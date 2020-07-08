@@ -18,6 +18,10 @@ const routes = [
     {
         url: '/notifications',
         name: 'nots'
+    },
+    {
+        url: '/game/lobby',
+        name: 'Lobby'
     }
 ]
 

@@ -24,11 +24,12 @@ export default function Notifications() {
 				switch (notification.type) {
 					case 'party/invite':
 						setNotifications((notifications) => {
+							console.log(notification.data.players.find(player => player.id === notification.data.owner))
 							return [
 								...notifications,
 								<Invite
 									id={notification.data.id}
-									from={notification.data.players[0].username}
+									from={notification.data.players.find(player => player.id === notification.data.owner).username}
 									key={uuid()}
 									destroy={() => destroy(notifications.length)}
 								/>,

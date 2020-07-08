@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from 'react';
 import SocketContext from '../../context/SocketContext';
 import './Search.scss';
 import QueueService from '../../services/QueueService/QueueService';
-import PartyService from '../../services/PartyService/PartyService';
 
 const partyStatuses = {
 	'WAIT': 0,
@@ -11,7 +10,7 @@ const partyStatuses = {
 }
 
 
-export default function Search() {
+export default function Search({partyData = null}) {
 	const { socket } = useContext(SocketContext);
 	const [isInSearch, setIsInSearch] = useState(false);
 	const [shake, setShake] = useState('');
@@ -25,7 +24,6 @@ export default function Search() {
 	}
 
 	function shakeAnime() {
-
 		setShake('shake');
 		setTimeout(() => {
 			setShake('');
@@ -33,14 +31,6 @@ export default function Search() {
 	}
 
 	useEffect(() => {
-		PartyService.getParty().then((party) => {
-			if (party.status === partyStatuses.QUEUE) {
-				setIsInSearch(true);
-			} else {
-				setIsInSearch(false);
-			}
-		});
-
 		socket.on('queue', (context) => {
 			console.log(context, 'search');
 			if (context.data) {
@@ -54,6 +44,17 @@ export default function Search() {
 			socket.off('queue');
 		};
 	}, [socket]);
+
+
+	useEffect(() => {
+		if (partyData) {
+			if (partyData.status === partyStatuses.QUEUE) {
+				setIsInSearch(true);
+			} else {
+				setIsInSearch(false);
+			}
+		}
+	}, [partyData])
 
 	return (
 		<div className="search">
