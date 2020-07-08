@@ -1,0 +1,106 @@
+.chat {
+	width: 300px;
+	height: 100%;
+
+	background: #1d1d2a;
+
+	.msgs {
+		position: fixed;
+		bottom: 150px;
+		height: 80%;
+		overflow: auto;
+		padding-top: 50px;
+
+		overflow-y: auto;
+
+		width: 300px;
+
+		.msg {
+			background: #381a94;
+			color: white;
+			width: 120px;
+			border-radius: 10px;
+			padding: 10px;
+            word-break: break-all;
+            
+            margin-top: 20px;
+
+            margin-right: auto;
+            margin-left: 5px;
+
+
+            &.my {
+                margin-right: 5px;
+                margin-left: auto;
+                background: #1a9047;
+
+                .from {
+                    margin-left: 50px;
+                }
+            }
+
+            .from {
+                margin-bottom: 10px;
+
+                text-decoration: underline;
+            }
+		}
+	}
+
+	.controls {
+		position: absolute;
+		bottom: 50px;
+		left: 50%;
+
+		transform: translate(-50%);
+
+		.msgInput {
+			width: 240px;
+			height: auto;
+			min-height: 42px;
+
+			background: #ffffff;
+			color: black;
+			border: none;
+			border-radius: 20px;
+
+			padding-left: 10px;
+			padding-right: 52px;
+			padding-top: 12px;
+			padding-bottom: 10px;
+			word-wrap: break-word;
+			word-break: break-all;
+			font-size: 15px;
+
+			outline: none;
+
+			display: flex;
+			align-items: center;
+			justify-content: left;
+		}
+
+		.send {
+			position: absolute;
+			right: 6px;
+			top: 51%;
+			transform: translate(0, -50%);
+
+			font-size: 20px;
+            color: #5f5f67;
+            
+            cursor: pointer;
+		}
+	}
+
+	.exit {
+		position: absolute;
+		top: 20px;
+		left: 20px;
+
+		color: white;
+
+        cursor: pointer;
+        
+        z-index: 35;
+	}
+}

@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 
 export default function useService() {
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     
     const request = useCallback( async (serviceFunc, needLoading) => {
         if (needLoading) {

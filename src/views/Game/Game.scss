@@ -1,56 +1,30 @@
-.voting {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-direction: column;
-
-	.map {
-		width: 284px;
-		height: 76px;
-
-		border: 1px transparent solid;
-		border-radius: 10px;
-
-		transition: 0.4s ease-in-out;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-
-		color: white;
-
-		background-position: center;
-		background-size: cover;
-		background-repeat: no-repeat;
-
-		margin: 10px;
-
-		cursor: pointer;
-
-        position: relative;
-
-		&:hover {
-            border: 1px rgb(61, 230, 61) solid;
-            box-shadow:0 0 30px rgba(61, 230, 61, 0.2);
-		}
-
-		&.selected {
-            border: 1px rgb(61, 230, 61) solid;
-            box-shadow:0 0 30px rgba(61, 230, 61, 0.2);
-        }
-        
-        .amount{
-            position: absolute;
-            bottom: 2px;
-            right: 5px;
-        }
-	}
-}
-
-
 .game {
     .timer {
         color: white;
 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        margin-top: 50px;
+    }
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    .chatBtn {
+        width: 60px;
+        height: 60px;
+
+        background: #1d1d2a;
+
+        border-radius: 10px;
+
+        cursor: pointer;
+
+        color: white;
         display: flex;
         align-items: center;
         justify-content: center;

@@ -1,5 +1,5 @@
 import FetchService from '../FetchService/FetchService';
-import { gameVoteUrl, gameUrl } from '../../urls/gameUrls';
+import { gameVoteUrl, gameUrl, chatMsgs } from '../../urls/gameUrls';
 
 export default class GameService {
 	/**
@@ -31,5 +31,17 @@ export default class GameService {
 		} else {
 			return body.data;
 		}
-	}
+    }
+    
+    static async getGameMsgs() {
+        const res = await FetchService.get(chatMsgs);
+		const body = res.body;
+
+		if (body.err) {
+			console.error(body.err);
+			return false;
+		} else {
+			return body.data;
+		}
+    }
 }
