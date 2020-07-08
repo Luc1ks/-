@@ -35,7 +35,7 @@ export default function Chat({ profile, setShow, show }) {
                 scrollToBottom();
             }, 300)
         }
-    }, [socket, msg])
+    }, [socket, msg, scrollToBottom])
 
 
     useEffect(() => {

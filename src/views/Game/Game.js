@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 
 import './Game.scss';
 
@@ -7,6 +7,7 @@ import ProfileService from '../../services/ProfileService/ProfileService';
 import Voting from '../../components/Voting/Voting';
 import Chat from '../../components/Chat/Chat';
 import Teams from '../../components/Teams/Teams';
+import SocketContext from '../../context/SocketContext';
 
 const statuses = {
     MAP_VOTING: 0,
@@ -24,7 +25,7 @@ export default function Game() {
     const [game, setGame] = useState({
         status: -1
     });
-
+    const {socket} = useContext(SocketContext);
 
     const [showChat, setShowChat] = useState(false);
 
@@ -43,6 +44,14 @@ export default function Game() {
         })
     }, [])
 
+
+    useEffect(() => {
+        socket.on('game/update', context => {
+            if (context.data) {
+                setGame(context.data);
+            }
+        })
+    })
 
     return (
         <div className="game">

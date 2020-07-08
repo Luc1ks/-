@@ -6,7 +6,6 @@ import {
 	rejectInviteUrl,
 	kickFromPartyUrl,
 } from '../../urls/partyUrls';
-import TokenService from '../TokenService/TokenService';
 import FetchService from '../FetchService/FetchService';
 
 export default class PartyService {

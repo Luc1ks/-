@@ -1,5 +1,4 @@
 import { joinQueueUrl, leaveQueueUrl } from "../../urls/queueUrls";
-import TokenService from "../TokenService/TokenService";
 import FetchService from "../FetchService/FetchService";
 
 class QueueService {
