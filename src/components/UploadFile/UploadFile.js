@@ -13,16 +13,14 @@ export default function UploadFile() {
         console.log(file);
         if (file && file.name.match(validateName)) {
             if (file.size < 8 * 1024 * 1024) {
-                const userData = JSON.parse(localStorage.getItem('userData'));
 
                 const formData = new FormData();
                 formData.append('result', file);
 
-                if (userData) {
-                    GameService.uploadFile(formData).then(data => {
-                        console.log(data);
-                    });
-                }
+                console.log(formData)
+                GameService.uploadFile(formData).then(data => {
+                    console.log(data);
+                });
             } else {
                 setErr('Максимальный размер файла 8 мегабайт')
             }
