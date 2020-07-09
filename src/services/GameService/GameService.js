@@ -59,7 +59,7 @@ export default class GameService {
 	}
 
 	static async uploadFile(formData) {
-		const res = await FetchService.post(uploadUrl, formData);
+		const res = await FetchService.postFromData(uploadUrl, formData);
 		const body = res.body;
 		console.log(body);
 

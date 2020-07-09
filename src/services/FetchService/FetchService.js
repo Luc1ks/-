@@ -49,4 +49,21 @@ export default class FetchService {
 			body: await res.json(),
 		};
 	}
+
+	static async postFromData(url, formData, headers = {}) {
+		const res = await fetch(url, {
+			method: 'POST',
+			headers: {
+				Authorization: 'Bearer ' + TokenService.getAccessToken(),
+				'Content-type': 'application/json',
+				...headers,
+			},
+			body: formData,
+		});
+		console.log(await res.text());
+		return {
+			...res,
+			body: await res.json(),
+		};
+	}
 }
