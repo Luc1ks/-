@@ -2,6 +2,8 @@ import React, { useRef, useState } from 'react';
 import GameService from '../../services/GameService/GameService';
 
 import './UploadFile.scss';
+import { uploadUrl } from '../../urls/gameUrls';
+import TokenService from '../../services/TokenService/TokenService';
 const validateName = /^.*\.(jpg|JPG|png|PNG|jpeg|JPEG)$/
 
 export default function UploadFile() {
@@ -17,10 +19,21 @@ export default function UploadFile() {
                 const formData = new FormData();
                 formData.append('result', file);
 
-                console.log(formData)
-                GameService.uploadFile(formData).then(data => {
-                    console.log(data);
-                });
+                fetch(uploadUrl, {
+                    method: 'POST',
+                    headers: {
+                        Authorization: 'Bearer ' + TokenService.getAccessToken(),
+                    },
+                    body: formData
+                }).then(data => {
+                    console.log(data, 'file upload')
+                    return data.json()
+                }).then(json => {
+                    if (json.success) {
+                        window.location.href = '';
+                    }
+                }).catch(err => console.log(err))
+
             } else {
                 setErr('Максимальный размер файла 8 мегабайт')
             }
