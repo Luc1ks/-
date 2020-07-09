@@ -1,5 +1,5 @@
 import FetchService from '../FetchService/FetchService';
-import { gameVoteUrl, gameUrl, chatMsgs } from '../../urls/gameUrls';
+import { gameVoteUrl, gameUrl, chatMsgs, cancelVoteUrl, uploadUrl } from '../../urls/gameUrls';
 
 export default class GameService {
 	/**
@@ -43,5 +43,31 @@ export default class GameService {
 		} else {
 			return body.data;
 		}
-    }
+	}
+	
+	static async CancelationVote() {
+		console.log(cancelVoteUrl)
+		const res = await FetchService.get(cancelVoteUrl);
+		const body = res.body;
+		console.log(body)
+		if (body.err) {
+			console.error(body.err);
+			return false;
+		} else {
+			return body.data;
+		}
+	}
+
+	static async uploadFile(formData) {
+		const res = await FetchService.post(uploadUrl, formData);
+		const body = res.body;
+		console.log(body);
+
+		if (body.err) {
+			console.error(body.err)
+			return false;
+		} else {
+			return true;
+		}
+	}
 }

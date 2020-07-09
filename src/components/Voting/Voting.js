@@ -3,27 +3,9 @@ import React, { useContext, useState, useEffect } from 'react';
 import './Voting.scss';
 import SocketContext from '../../context/SocketContext';
 
-
-
-import map1 from './map1.png';
-import map2 from './map2.png';
-import map3 from './map3.png';
 import GameService from '../../services/GameService/GameService';
 
-const maps = [
-    {
-        name: 'map1',
-        url: map1
-    },
-    {
-        name: 'map2',
-        url: map2
-    },
-    {
-        name: 'map3',
-        url: map3
-    }
-]
+import maps from '../../data/maps/maps';
 
 
 export default function Voting({ profile, game }) {
@@ -36,7 +18,6 @@ export default function Voting({ profile, game }) {
         const interval = setInterval(() => {
             if (game) {
                 const newTime = (new Date(game.voteStartAt).getTime() - new Date().getTime()) / 1000 * -1;
-                console.log(30 - Math.round(newTime))
                 setTimer(30 - Math.round(newTime))
             }
         }, 1000)
@@ -51,7 +32,7 @@ export default function Voting({ profile, game }) {
         if (new Date().getTime() - lastFetch > 3000) {
             GameService.vote(index).then((data) => {
                 if (data) {
-                    console.log(data);
+                    console.log(data, 'fetch votes');
                     setVotes(data);
                     setLastFetch(new Date().getTime());
                 }
@@ -61,10 +42,8 @@ export default function Voting({ profile, game }) {
 
     useEffect(() => {
         socket.on('game/vote', (context) => {
-            if (context.type === 'vote') {
-                console.log(context.data, 'votes')
-                setVotes(context.data);
-            }
+            console.log(context.data, 'votes')
+            setVotes(context.data);
         });
 
         return () => {

@@ -4,6 +4,7 @@ import './Chat.scss';
 import Overlay from '../Overlay/Overlay';
 import SocketContext from '../../context/SocketContext';
 import GameService from '../../services/GameService/GameService';
+import { v4 as uuid } from 'uuid';
 
 export default function Chat({ profile, setShow, show }) {
     const inpRef = useRef();
@@ -70,7 +71,7 @@ export default function Chat({ profile, setShow, show }) {
                         msgs.map(msg => {
 
                             return (
-                                <div className={msg.author === profile.username ? "msg my" : "msg"}>
+                                <div key={uuid()} className={msg.author === profile.username ? "msg my" : "msg"}>
                                     <div className="from">{msg.author}</div>
                                     <div className="content">{msg.content}</div>
                                 </div>

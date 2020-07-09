@@ -16,6 +16,7 @@ import Notifications from './components/Notifications/Notifications';
 import NotificationsView from './views/NotificationsView/NotificationsView';
 import Redirects from './components/Redirects/Redirects';
 import Game from './views/Game/Game';
+import Profile from './views/Profile/Profile';
 
 function App() {
 	const [socket, setSocket] = useState(null);
@@ -68,6 +69,9 @@ function App() {
 							</PrivateRoute>
 							<PrivateRoute path="/game/lobby" setSocket={setSocket} exact>
 								<Game />
+							</PrivateRoute>
+							<PrivateRoute path="/profile" setSocket={setSocket} exact>
+								<Profile />
 							</PrivateRoute>
 							<Route path={frontAuthUrl}>
 								<Auth setSocket={setSocket} />

@@ -1,0 +1,38 @@
+.upload {
+    margin: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    input {
+        display: none;
+    }
+
+    button {
+        border: none;
+        border-radius: 10px;
+
+        width: 150px;
+        height: 40px;
+
+        background: #2cbf2c;
+
+        color: white;
+
+        font-size: 16px;
+
+        cursor: pointer;
+
+        outline: none;
+    }
+
+    .err {
+        color: red;
+
+        margin-top: 10px;
+
+
+        font-size: 14px;
+    }
+}

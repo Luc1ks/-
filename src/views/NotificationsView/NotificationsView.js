@@ -44,7 +44,7 @@ export default function NotificationsView() {
             {
                 nots.friends.map((friend, index) => {
                     return (
-                        <FriendReq from={friend.username} destroy={() => destroyFriendReq(index)}/>
+                        <FriendReq from={friend} destroy={() => destroyFriendReq(index)}/>
                     )
                 })
             }
