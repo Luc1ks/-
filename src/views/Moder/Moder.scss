@@ -1,0 +1,32 @@
+.lobby {
+	.user_pics {
+		display: grid;
+		grid-template-columns: 250px 250px;
+		column-gap: 50px;
+		.team1,
+		.team2 {
+			img {
+				width: 250px;
+
+				margin-top: 20px;
+			}
+		}
+		.team1 {
+			img {
+				border: 1px solid blue;
+			}
+		}
+
+		.team2 {
+			img {
+				border: 1px solid red;
+			}
+		}
+	}
+
+	.controls {
+        button {
+            margin: 15px;
+        }
+	}
+}

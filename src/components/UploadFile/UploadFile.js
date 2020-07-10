@@ -22,7 +22,7 @@ export default function UploadFile() {
                 fetch(uploadUrl, {
                     method: 'POST',
                     headers: {
-                        Authorization: 'Bearer ' + TokenService.getAccessToken(),
+                        Authorization: 'Bearer ' + TokenService.getAccessToken()
                     },
                     body: formData
                 }).then(data => {
@@ -30,7 +30,7 @@ export default function UploadFile() {
                     return data.json()
                 }).then(json => {
                     if (json.success) {
-                        window.location.href = '';
+                        window.location.replace('/');
                     }
                 }).catch(err => console.log(err))
 

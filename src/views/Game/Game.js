@@ -15,9 +15,10 @@ const statuses = {
     MAP_VOTING: 0,
     CANCELED: 1,
     UNDECIDED: 2,
-    WINNER_1: 3,
-    WINNER_2: 4,
-    DRAW: 5
+    WAIT_MODER: 3,
+    WINNER_1: 4,
+    WINNER_2: 5,
+    DRAW: 6
 }
 
 export default function Game() {
@@ -66,7 +67,7 @@ export default function Game() {
                     : ''
             }
             {
-                game.status === statuses.UNDECIDED
+                game.status === statuses.UNDECIDED && game.status === statuses.WAIT_MODER
                     ? <GameData game={game} />
                     : ''
             }

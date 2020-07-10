@@ -11,7 +11,7 @@ export default class FetchService {
 		let paramsStringified = '?';
 
 		paramsStringified += querystring.stringify(params);
-
+		
 		const res = await fetch(url + paramsStringified, {
 			method: 'GET',
 			headers: {

@@ -18,22 +18,15 @@ export default class ProfileService {
 	}
 
 	static async GetProfileByUsername(username) {
-		const res = await FetchService.get(profileUrl, {
-			username: username,
-		});
+		const res = await FetchService.get(profileUrl + `/${username}`);
 
 		const body = res.body;
 		console.log(body, 'get profile by username');
 
 		if (body.err) {
-			const result = await JwtErrorService.refreshByErr(body.err);
-			if (result) {
-				this.GetProfileByUsername(username);
-			} else {
-				return false;
-			}
+			return false;
 		} else {
-			return body.user;
+			return body;
 		}
 	}
 }

@@ -17,16 +17,24 @@ import NotificationsView from './views/NotificationsView/NotificationsView';
 import Redirects from './components/Redirects/Redirects';
 import Game from './views/Game/Game';
 import Profile from './views/Profile/Profile';
+import Moder from './views/Moder/Moder';
+import PickachuService from './services/PickachuService/PickachuService';
+
+PickachuService.drawPickachu()
+
 
 function App() {
 	const [socket, setSocket] = useState(null);
 	const [showPreloader, setShowPreloader] = useState(true);
+
+
+
 	//#region auth
 	useEffect(() => {
 		if (TokenService.getAccessToken()) {
 			AuthService.authorize().then((socket) => {
 				socket.on('connect', () => console.log('connected'));
-
+ 
 				socket.on('disconnect', () => {
 					console.log('disconnected');
 					setShowPreloader(false);
@@ -70,9 +78,18 @@ function App() {
 							<PrivateRoute path="/game/lobby" setSocket={setSocket} exact>
 								<Game />
 							</PrivateRoute>
-							<PrivateRoute path="/profile" setSocket={setSocket} exact>
+							<PrivateRoute path="/profile/:username" setSocket={setSocket}>
 								<Profile />
 							</PrivateRoute>
+							<PrivateRoute path="/profile/" setSocket={setSocket} exact>
+								<Profile />
+							</PrivateRoute>
+							<PrivateRoute setSocket={setSocket} path="/moder">
+								<Moder />
+							</PrivateRoute>
+							<Route path="/profile/:username" exact>
+								<Profile />
+							</Route>
 							<Route path={frontAuthUrl}>
 								<Auth setSocket={setSocket} />
 							</Route>
