@@ -1,6 +1,7 @@
 import { profileUrl } from '../../urls/profileUrls';
-import JwtErrorService from '../JwtErrorService/JwtErrorService';
 import FetchService from '../FetchService/FetchService';
+import baseUrl from '../../urls/baseUrl';
+import TokenService from '../TokenService/TokenService';
 
 export default class ProfileService {
 	static async GetOwnProfie() {
@@ -28,5 +29,27 @@ export default class ProfileService {
 		} else {
 			return body;
 		}
+	}
+
+	static async EditProfile(oldPassword, newPassword, so2_nickname, so2_id, avatar, banner) {
+		const formData = new FormData();
+		formData.append('oldPassword', oldPassword);
+		formData.append('newPassword', newPassword);
+		formData.append('so2_nickname', so2_nickname);
+		formData.append('so_id', so2_id);
+		formData.append('avatar', avatar);
+		formData.append('banner', banner);
+
+		const res = await fetch(baseUrl + '/api/profile/edit', {
+			method: 'POST',
+			headers: {
+				Authorization: 'Bearer ' + TokenService.getAccessToken(),
+			},
+			body: formData
+		});
+
+		const body = await res.json();
+
+		return body;
 	}
 }

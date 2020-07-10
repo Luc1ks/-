@@ -1,5 +1,5 @@
 import FetchService from '../FetchService/FetchService';
-import { unwarnUrl, lobbiesUrl } from '../../urls/moderUrls';
+import { unwarnUrl, lobbiesUrl, gameSet } from '../../urls/moderUrls';
 
 export default class ModerService {
 	static async unwarn(id) {
@@ -24,6 +24,23 @@ export default class ModerService {
             return false
         } else {
             return body.data;
+        }
+    }
+
+    static async setWinner(lobby, status) {
+        const res = await FetchService.post(gameSet, {
+            gameId: lobby.id,
+            gameState: status
+        });
+
+        const body = res.body;
+        console.log(body);
+
+        if (body.err) {
+            console.error(body.err)
+            return false;
+        } else {
+            return true
         }
     }
 }

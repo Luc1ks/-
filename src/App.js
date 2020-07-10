@@ -84,7 +84,7 @@ function App() {
 							<PrivateRoute path="/profile/" setSocket={setSocket} exact>
 								<Profile />
 							</PrivateRoute>
-							<PrivateRoute setSocket={setSocket} path="/moder">
+							<PrivateRoute setSocket={setSocket} path="/moder" exact>
 								<Moder />
 							</PrivateRoute>
 							<Route path="/profile/:username" exact>

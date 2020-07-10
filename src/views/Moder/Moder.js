@@ -7,6 +7,16 @@ import baseUrl from '../../urls/baseUrl';
 import './Moder.scss';
 import { v4 as uuid } from 'uuid';
 
+const statuses = {
+    MAP_VOTING: 0,
+    CANCELED: 1,
+    UNDECIDED: 2,
+    WAIT_MODER: 3,
+    WINNER_1: 4,
+    WINNER_2: 5,
+    DRAW: 6
+}
+
 export default function Moder() {
     const { request, isLoading } = useService();
     const [lobies, setLobies] = useState([])
@@ -44,6 +54,10 @@ export default function Moder() {
         }
     }, [lobby])
 
+    function setWinner(lobby, status) {
+        ModerService.setWinner(lobby, status);
+    }
+
     if (isLoading) {
         return (
             <PreLoader />
@@ -62,6 +76,7 @@ export default function Moder() {
             </div>
         )
     } else {
+        console.log(lobby)
         return (
             <div className="lobby">
                 <div className="user_pics">
@@ -86,9 +101,9 @@ export default function Moder() {
                 </div>
 
                 <div className="controls">
-                    <button>Голубые</button>
-                    <button>Красные</button>
-                    <button>Ничья</button>
+                    <button onClick={() => setWinner(lobby, statuses.WINNER_1)}>Голубые</button>
+                    <button onClick={() => setWinner(lobby, statuses.WINNER_2)}>Красные</button>
+                    <button onClick={() => setWinner(lobby, statuses.DRAW)}>Ничья</button>
                 </div>
             </div>
         )

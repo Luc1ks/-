@@ -1,7 +1,7 @@
 export default class PickachuService {
     static async drawPickachu() {
         console.log('%s', `
-        ____________¶¶
+____________¶¶
 ___________¶¶¶¶
 __________¶¶¶¶¶¶
 _________¶¶¥¥¥¶¶¶
