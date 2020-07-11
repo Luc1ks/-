@@ -95,8 +95,8 @@ export default function Profile() {
             <div className="profileEditor">
                 <input type="text" placeholder="old password" onChange={e => setOldPass(e.target.value)}/>
                 <input type="text" name="" placeholder="oldPAssword" id="" onChange={e => setNewPass(e.target.value)}/>
-                <input type="text" placeholder="so2 nickname" onChange={e => setSo2Nickname(e.target.value)} value={profile.gamesInfo.SO2.nickname} />
-                <input type="text" placeholder="so2 id" onChange={e => setSo2Id(e.target.value)} value={profile.gamesInfo.SO2.id} />
+                <input type="text" placeholder="so2 nickname" onChange={e => setSo2Nickname(e.target.value)} defaultValue={profile.gamesInfo.SO2.nickname} />
+                <input type="text" placeholder="so2 id" onChange={e => setSo2Id(e.target.value)} defaultValue={profile.gamesInfo.SO2.id} />
 
                 <input ref={avatarRef} onChange={handleAvatar} type="file" name="" id="" />
                 <input ref={bannerRef} onChange={handleBanner} type="file" name="" id="" />
