@@ -31,13 +31,15 @@ export default class ProfileService {
 		}
 	}
 
-	static async EditProfile(oldPassword, newPassword, so2_nickname, so2_id, avatar, banner) {
+	static async EditProfile(oldPassword, newPassword, so2_nickname, so2_id, bio, avatar, banner) {
 		const formData = new FormData();
 		console.log(oldPassword, newPassword, so2_id, so2_nickname);
 		formData.append('oldPassword', oldPassword);
 		formData.append('newPassword', newPassword);
 		formData.append('so2_nickname', so2_nickname);
 		formData.append('so2_id', so2_id);
+		formData.append('bio', bio);
+
 		if (avatar) {
 			formData.append('avatar', avatar);
 		}
@@ -56,7 +58,7 @@ export default class ProfileService {
 			// 	so2_nickname,
 			// 	so2_id,
 			// }),
-			body: formData
+			body: formData,
 		});
 
 		const body = await res.json();

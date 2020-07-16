@@ -1,3 +1,3 @@
-const socketUrl = 'https://totalifydev.tk';
+const socketUrl = 'http://localhost:4000';
 
 export default socketUrl;

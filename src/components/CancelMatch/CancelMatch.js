@@ -24,8 +24,8 @@ export default function CancelMatch({game = null}) {
     useEffect(() => {
         // console.log(game)
         if (game && game.cancelVotes) {
-            console.log(game.cancelVotes.length + ' ' + num2str(game.cancelVotes.length, ['голос', 'голоса', 'голосов']))
-            setCounter(game.cancelVotes.length + ' ' + num2str(game.cancelVotes.length, ['голос', 'голоса', 'голосов']))
+            console.log(game.cancelVotes.length + '/6')
+            setCounter(game.cancelVotes.length + '/6')
         }
     }, [game])
 

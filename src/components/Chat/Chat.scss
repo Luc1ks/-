@@ -1,5 +1,5 @@
 .chat {
-	width: 300px;
+	width: 100%;
 	height: 100%;
 
 	background: #1d1d2a;
@@ -7,18 +7,21 @@
 	.msgs {
 		position: fixed;
 		bottom: 150px;
+		left: 50%;
+		transform: translate(-50%, 0);
 		height: 80%;
 		overflow: auto;
 		padding-top: 50px;
 
 		overflow-y: auto;
 
-		width: 300px;
+		max-width: 600px;
+		width: 90%;
 
 		.msg {
 			background: #381a94;
 			color: white;
-			width: 120px;
+			width: 50%;
 			border-radius: 10px;
 			padding: 10px;
             word-break: break-all;
@@ -101,6 +104,10 @@
 
         cursor: pointer;
         
-        z-index: 35;
+		z-index: 35;
+		
+		background: #FF354D;
+		padding: 10px;
+		border-radius: 10px;
 	}
 }

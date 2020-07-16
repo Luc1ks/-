@@ -12,6 +12,9 @@ export default function Redirects() {
                 case 'game':
                     setRedirect(<Redirect to="/game/lobby" />);
                     break;
+                case 'main':
+                    setRedirect(<Redirect to="/" />);
+                    break;
                 default:
                     break;
             }

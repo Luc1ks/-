@@ -14,6 +14,8 @@
     justify-content: center;
     flex-direction: column;
 
+    padding-bottom: 120px;
+
     .chatBtn {
         width: 60px;
         height: 60px;
@@ -30,5 +32,10 @@
         justify-content: center;
 
         margin-top: 50px;
+    }
+
+    .controls {
+        display: flex;
+        margin-top: 20px;
     }
 }

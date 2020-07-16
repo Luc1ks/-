@@ -5,6 +5,7 @@ import PartyService from '../../services/PartyService/PartyService';
 import { CancelBtn, SubmitBtn, DeleteBtn } from '../btns/btns';
 import Overlay from '../Overlay/Overlay';
 import ProfileService from '../../services/ProfileService/ProfileService';
+import baseUrl from '../../urls/baseUrl';
 
 export default function Party({ partyData = null, profileData = null }) {
 	const { socket } = useContext(SocketContext);
@@ -89,13 +90,18 @@ export default function Party({ partyData = null, profileData = null }) {
 
 			{party.players.map((player) => {
 				return (
-					<div key={player.username} className="member">
-						{player.username}
+					<div key={player.username} style={{backgroundImage: `url(${baseUrl}/api/uploads/user/${player.id}/avatar.png)`}} className="member">
+						{/* {player.username} */}
 						{user.id === party.owner && user.username !== player.username ? (
 							<DeleteBtn onClick={() => kick(player.username)} />
 						) : (
 								''
 							)}
+						{
+							player.username === user.username && user.id !== party.owner
+								? <DeleteBtn onClick={() => leave()} />
+								: ''
+						}
 						{
 							party.owner === player.id ?
 								<div className="crown"></div>
@@ -106,14 +112,8 @@ export default function Party({ partyData = null, profileData = null }) {
 			})}
 			{party.players.length !== 5 ? (
 				<div className="addMember member" onClick={() => setShowOverlay(true)}>
-					Пригласить игрока
-				</div>
-			) : (
-					''
-				)}
-			{party.players.length !== 1 ? (
-				<div className="cancel member" onClick={() => leave()}>
-					Выйти
+					{/* Пригласить игрока */}
+					+
 				</div>
 			) : (
 					''

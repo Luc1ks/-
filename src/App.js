@@ -19,22 +19,25 @@ import Game from './views/Game/Game';
 import Profile from './views/Profile/Profile';
 import Moder from './views/Moder/Moder';
 import PickachuService from './services/PickachuService/PickachuService';
+import ProfileContext from './context/ProfileContext';
+import ProfileService from './services/ProfileService/ProfileService';
 
-PickachuService.drawPickachu()
-
+PickachuService.drawPickachu();
 
 function App() {
 	const [socket, setSocket] = useState(null);
 	const [showPreloader, setShowPreloader] = useState(true);
-
-
+	const [profile, setProfile] = useState({
+		username: '',
+		id: -1,
+	});
 
 	//#region auth
 	useEffect(() => {
 		if (TokenService.getAccessToken()) {
 			AuthService.authorize().then((socket) => {
 				socket.on('connect', () => console.log('connected'));
- 
+
 				socket.on('disconnect', () => {
 					console.log('disconnected');
 					setShowPreloader(false);
@@ -44,6 +47,9 @@ function App() {
 					console.log('authed');
 					setSocket(socket);
 					setShowPreloader(false);
+					ProfileService.GetOwnProfie().then((profile) => {
+						setProfile(profile);
+					});
 				});
 
 				socket.on('unauth', () => {
@@ -62,42 +68,44 @@ function App() {
 	} else if (socket) {
 		return (
 			<div className="App">
-				<SocketContext.Provider value={{ socket: socket }}>
-					<BrowserRouter>
-						<Notifications />
-						<Switch>
-							<PrivateRoute path="/" setSocket={setSocket} exact>
-								<MatchMaking />
-							</PrivateRoute>
-							<PrivateRoute path="/friends" setSocket={setSocket} exact>
-								<Friends />
-							</PrivateRoute>
-							<PrivateRoute path="/notifications" setSocket={setSocket} exact>
-								<NotificationsView />
-							</PrivateRoute>
-							<PrivateRoute path="/game/lobby" setSocket={setSocket} exact>
-								<Game />
-							</PrivateRoute>
-							<PrivateRoute path="/profile/:username" setSocket={setSocket}>
-								<Profile />
-							</PrivateRoute>
-							<PrivateRoute path="/profile/" setSocket={setSocket} exact>
-								<Profile />
-							</PrivateRoute>
-							<PrivateRoute setSocket={setSocket} path="/moder" exact>
-								<Moder />
-							</PrivateRoute>
-							<Route path="/profile/:username" exact>
-								<Profile />
-							</Route>
-							<Route path={frontAuthUrl}>
-								<Auth setSocket={setSocket} />
-							</Route>
-						</Switch>
-						<Navbar />
-						<Redirects />
-					</BrowserRouter>
-				</SocketContext.Provider>
+				<ProfileContext.Provider value={{ profile: profile }}>
+					<SocketContext.Provider value={{ socket: socket }}>
+						<BrowserRouter>
+							<Notifications />
+							<Switch>
+								<PrivateRoute path="/" setSocket={setSocket} exact>
+									<MatchMaking />
+								</PrivateRoute>
+								<PrivateRoute path="/friends" setSocket={setSocket} exact>
+									<Friends />
+								</PrivateRoute>
+								<PrivateRoute path="/notifications" setSocket={setSocket} exact>
+									<NotificationsView />
+								</PrivateRoute>
+								<PrivateRoute path="/game/lobby" setSocket={setSocket} exact>
+									<Game />
+								</PrivateRoute>
+								<PrivateRoute path="/profile/:username" setSocket={setSocket}>
+									<Profile />
+								</PrivateRoute>
+								<PrivateRoute path="/profile/" setSocket={setSocket} exact>
+									<Profile />
+								</PrivateRoute>
+								<PrivateRoute setSocket={setSocket} path="/moder" exact>
+									<Moder />
+								</PrivateRoute>
+								<Route path="/profile/:username" exact>
+									<Profile />
+								</Route>
+								<Route path={frontAuthUrl}>
+									<Auth setSocket={setSocket} />
+								</Route>
+							</Switch>
+							<Navbar />
+							<Redirects />
+						</BrowserRouter>
+					</SocketContext.Provider>
+				</ProfileContext.Provider>
 			</div>
 		);
 	} else {

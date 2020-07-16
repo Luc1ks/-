@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import SocketContext from '../../context/SocketContext';
 import './Search.scss';
 import QueueService from '../../services/QueueService/QueueService';
+import {ReactComponent as  Play} from './play.svg'
 
 const partyStatuses = {
 	'WAIT': 0,
@@ -59,7 +60,7 @@ export default function Search({partyData = null}) {
 	return (
 		<div className="search">
 			<button className={(isInSearch ? 'red ' : ' ') + shake} onClick={() => joinQueue()}>
-				{isInSearch ? 'Отмена' : 'Искать'}
+				<Play />
 			</button>
 		</div>
 	);

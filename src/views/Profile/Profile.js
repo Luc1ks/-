@@ -8,6 +8,7 @@ import { useParams } from 'react-router';
 import { v4 as uuid } from 'uuid';
 import ModerService from '../../services/ModerService/ModerService';
 import FriendsService from '../../services/FriendsService/FriendsService';
+import baseUrl from '../../urls/baseUrl';
 
 const validateName = /^.*\.(jpg|JPG|png|PNG|jpeg|JPEG)$/;
 
@@ -20,6 +21,9 @@ export default function Profile() {
     const [avatar, setAvatar] = useState(null);
     const [banner, setBanner] = useState(null);
 
+    const [avatarUrl, setAvatarUlr] = useState('');
+    const [bannerUrl, setBannerUrl] = useState('');
+
     const avatarRef = useRef();
     const bannerRef = useRef();
 
@@ -27,10 +31,7 @@ export default function Profile() {
     const [newPass, setNewPass] = useState('');
     const [so2Nickname, setSo2Nickname] = useState('');
     const [so2Id, setSo2Id] = useState('');
-
-    useEffect(() => {
-        console.log(username)
-    }, [username])
+    const [bio, setBio] = useState('');
 
     useEffect(() => {
         if (username) {
@@ -68,6 +69,7 @@ export default function Profile() {
         if (file && file.name.match(validateName)) {
             if (file.size < 8 * 1024 * 1024) {
                 setAvatar(file);
+                setAvatarUlr(URL.createObjectURL(file));
             }
         }
     }
@@ -77,13 +79,14 @@ export default function Profile() {
         if (file && file.name.match(validateName)) {
             if (file.size < 8 * 1024 * 1024) {
                 setBanner(file);
+                setBannerUrl(URL.createObjectURL(file));
             }
         }
     }
 
 
     function handleEdit() {
-        ProfileService.EditProfile(oldPass, newPass, so2Nickname, so2Id, avatar, banner).then((data) => {
+        ProfileService.EditProfile(oldPass, newPass, so2Nickname, so2Id, bio, avatar, banner).then((data) => {
             console.log(data)
         })
     }
@@ -93,28 +96,60 @@ export default function Profile() {
     } else if (isEditing) {
         return (
             <div className="profileEditor">
-                <input type="text" placeholder="old password" onChange={e => setOldPass(e.target.value)}/>
-                <input type="text" name="" placeholder="oldPAssword" id="" onChange={e => setNewPass(e.target.value)}/>
-                <input type="text" placeholder="so2 nickname" onChange={e => setSo2Nickname(e.target.value)} defaultValue={profile.gamesInfo.SO2.nickname} />
-                <input type="text" placeholder="so2 id" onChange={e => setSo2Id(e.target.value)} defaultValue={profile.gamesInfo.SO2.id} />
+                <label htmlFor="">
+                    Старый пароль:<br /> <input type="text" placeholder="Старый пароль" onChange={e => setOldPass(e.target.value)} />
+                </label>
+                <label htmlFor="">
+                    Новый пароль:<br /> <input type="text" name="" placeholder="Новый пароль" id="" onChange={e => setNewPass(e.target.value)} />
+                </label>
+                <label htmlFor="">
+                    So2 никнейм:<br /> <input type="text" placeholder="So2 никнейм" onChange={e => setSo2Nickname(e.target.value)} defaultValue={profile.gamesInfo.SO2.nickname} />
+                </label>
+
+                <label htmlFor="">
+                    So2 id: <br />
+                    <input type="text" placeholder="So2 id" onChange={e => setSo2Id(e.target.value)} defaultValue={profile.gamesInfo.SO2.id} />
+                </label>
+
+                <label htmlFor="">
+                    Статус:
+                    <textarea name="bio" id="" maxLength={72} cols={30} rows={10} onChange={e => setBio(e.target.value)} placeholder="Статус" defaultValue={profile.bio}>
+
+                    </textarea>
+                </label>
+
 
                 <input ref={avatarRef} onChange={handleAvatar} type="file" name="" id="" />
                 <input ref={bannerRef} onChange={handleBanner} type="file" name="" id="" />
 
-                <button onClick={() => handleEdit()}>Отпарвить</button>
+                <div className="banner" onClick={() =>
+                    // @ts-ignore
+                    avatarRef.current.click()} style={{ backgroundImage: `url(${bannerUrl})` }}>
+                    Установить баннер
+                    </div>
+                <div className="avatar" onClick={() =>
+                    // @ts-ignore
+                    bannerRef.current.click()} style={{ backgroundImage: `url(${avatarUrl})` }}>
+                    Установить аватар
+                    </div>
+
+                <div className="controls">
+                    <button onClick={() => handleEdit()}>Отпарвить</button>
+                    <button className="exit" onClick={() => setIsEditing(false)}>Отмена</button>
+                </div>
+
             </div>
         )
     } else if (profile) {
         return (
             <div className="profile">
                 <div className="media">
-                    <div className="banner"></div>
-                    <div className="avatar"></div>
+                    <div className="banner" style={{ backgroundImage: ` url(${baseUrl}/api/uploads/user/${profile.id}/banner.png), url(${baseUrl}/api/uploads/user/-1/banner.png)` }}></div>
+                    <div className="avatar" style={{ backgroundImage: `url(${baseUrl}/api/uploads/user/${profile.id}/avatar.png), url(${baseUrl}/api/uploads/user/-1/avatar.png)` }}></div>
                 </div>
                 <div className="info">
-                    <p className="username">Username: {profile.username}</p>
-                    <p className="bio">Bio: {profile.bio}</p>
-                    <p className="rating">Rating: {profile.rating}</p>
+                    <p className="username">{profile.username}</p>
+                    <p className="bio">{profile.bio}</p>
                     {
                         profile.warns
                             ? profile.warns.map((warn) => {
@@ -129,6 +164,20 @@ export default function Profile() {
                             })
                             : ''
                     }
+                </div>
+                <div className="ratings">
+                    <div className="rating">
+                        <p className="value elo">{profile.rating}</p>
+                        <p className="name elo">ELO</p>
+                    </div>
+                    <div className="rating">
+                        <p className="value wins">{profile.wins}</p>
+                        <p className="name wins">WINS</p>
+                    </div>
+                    <div className="rating">
+                        <p className="value loses">{profile.total_games - profile.wins}</p>
+                        <p className="name loses">LOSE</p>
+                    </div>
                 </div>
                 <div className="controls">
                     {

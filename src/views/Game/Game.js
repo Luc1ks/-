@@ -57,26 +57,42 @@ export default function Game() {
         })
     })
 
-   
+    useEffect(() => {
+        console.log(game.status === statuses.UNDECIDED)
+    }, [game])
 
-    return (
-        <div className="game">
-            {
-                game.status === statuses.MAP_VOTING
-                    ? <Voting profile={profile} game={game} />
-                    : ''
-            }
-            {
-                game.status === statuses.UNDECIDED && game.status === statuses.WAIT_MODER
-                    ? <GameData game={game} />
-                    : ''
-            }
-            <div className="chatBtn" onClick={() => setShowChat(true)}>Chat</div>
-            <UploadFile />
-            <Chat profile={profile} setShow={setShowChat} show={showChat} />
-            <CancelMatch game={game}/>
-        </div>
-    )
+    if (game.status === statuses.CANCELED) {
+        window.location.replace('');
+    }
 
+    if (game.status === statuses.MAP_VOTING) {
+        return (
+            <div className="game">
+                <Voting profile={profile} game={game} />
+            </div>
+        )
+    } else if (game.status === statuses.UNDECIDED || game.status === statuses.WAIT_MODER) {
+        return (
+            <div className="game">
+                <GameData game={game} />
+                <div className="controls">
+                    <UploadFile />
+                    <CancelMatch game={game} />
+                </div>
 
+                <div className="communications">
+                    <div className="chatBtn" onClick={() => setShowChat(true)}>Chat</div>
+                    <a href="" className="dsicord"></a>
+                </div>
+                <Chat profile={profile} setShow={setShowChat} show={showChat} />
+            </div>
+        )
+    } else {
+        return (
+            <div className="game">
+                <div className="chatBtn" onClick={() => setShowChat(true)}>Chat</div>
+                <Chat profile={profile} setShow={setShowChat} show={showChat} />
+            </div>
+        )
+    }
 }

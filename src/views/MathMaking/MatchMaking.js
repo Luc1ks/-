@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './MathcMaking.scss';
-import ProfileData from '../../components/ProfileData/ProfileData';
+// import ProfileData from '../../components/ProfileData/ProfileData';
 import Party from '../../components/Party/Party';
 import Search from '../../components/Search/Search';
 import useService from '../../hooks/useService';
@@ -33,9 +33,9 @@ export default function MatchMaking() {
 	} else {
 		return (
 			<div className="matchMaking">
-				<ProfileData profileData={profile}/>
-				<Search partyData={party}/>
 				<Party profileData={profile} partyData={party}/>
+				{/* <ProfileData profileData={profile}/> */}
+				<Search partyData={party}/>
 			</div>
 		);
 	}

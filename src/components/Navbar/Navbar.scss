@@ -1,16 +1,16 @@
 .navbar {
 	position: fixed;
 	bottom: 0;
-	height: 35px;
+	height: 47px;
 	width: 100%;
 
-	background: #1d1d2a;
-
+	// background: #404552;
+	background-color: #383b44;
 	display: grid;
 	align-items: center;
 	justify-content: center;
 
-	grid-template-columns: 45px 45px 45px 45px ;
+	grid-template-columns: 45px 45px 45px;
 	// grid-auto-columns: 45px;
 	column-gap: 40px;
 
@@ -28,6 +28,15 @@
 		transition: 0.3s;
 
 		font-size: 18px;
+
+		img {
+			width: 27px;
+			height: 27px;
+
+			&.profile {
+				border-radius: 100%;
+			}
+		}
 
 		&.active {
 			color: #2dff7d;

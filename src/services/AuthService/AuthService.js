@@ -17,9 +17,10 @@ class AuthService {
 		const body = res.body;
 		console.log(body);
 
-		if (body.err) {
+		if (body.err || body.errors) {
 			return {
 				err: body.err,
+				errors: body.errors
 			};
 		} else {
 			console.log(body.access_token);

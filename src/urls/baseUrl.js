@@ -1,3 +1,3 @@
-const baseUrl = 'https://totalifydev.tk';
+const baseUrl = 'http://localhost:4000';
 
 export default baseUrl;

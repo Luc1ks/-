@@ -1,18 +1,22 @@
 .cancelMatch {
-    margin-top: 20px;
+    // margin-top: 20px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+    position: relative;
 
     color: white;
 
     button {
         padding: 10px;
+        border-radius: 10px;
+        margin: 0;
+        margin-left: 10px;
     }
 
     .counter {
-        margin-top: 10px;
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+
+        transform: translate(-50%, 0);
     }
 }
